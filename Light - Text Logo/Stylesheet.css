@@ -1,0 +1,4616 @@
+/*
+----------------------------------------------------
+
+    Hector Big Picture, a theme for Reddit
+    By u/hectorlizard
+    More info at r/HectorBigPicture and hectorlizard.me
+
+    Light / Text logo variant
+
+    Version : 1.0
+    Released : 2020-03-09
+    Design + code : u/hectorlizard
+
+----------------------------------------------------
+*/
+
+/*
+
+    Index
+
+    -   Hector color system
+
+    1.  Global Styles
+        1.1 Text & links [body, a, blockquote, code, spoiler text etc.]
+        1.2 Buttons [button, .nav-buttons]
+        1.3 Regular tables [table]
+        1.4 Link flair [.linkflairlabel]
+
+    2.  Header [#header]
+        2.1 Subreddit List [#sr-header-area]
+            2.1.1  Dropdown List [.selected, .drop-choices]
+            2.1.2  Subreddits bar [.sr-bar, .flat-list]
+            2.1.3  'Edit»' link [#sr-more-link]
+            2.1.4  Hide 'Visit New Reddit'
+        2.2 Main Header [#header-bottom-left]
+            2.2.1  Subreddit Title [.pagename]
+            2.2.2  Navigation [#header .tabmenu]
+            2.2.3  Animated Snoo icon [#header-img-a]
+        2.3 User Menu [#header-bottom-right]
+            2.3.1  Mail [#mail, #modmail]
+            2.3.2  Preferences & Logout [.pref-lang, .loggedin .logout]
+
+    3. Sidebar [.side]
+        3.1 Search bar [.search]
+            3.1.1 Main search field [#search input]
+            3.1.2 Search options [#searchexpando, .infobar]
+        3.2 Login form [.login-form-side]
+        3.3 Link metadata [.linkinfo]
+        3.4 Submit & sub creation buttons [.morelink]
+        3.5 Titlebox [.titlebox]
+            3.5.1 Sidebar subreddit title [.titlebox h1]
+            3.4.2 Subscribe/unsubscribe buttons
+            3.5.3 Subscribers & online users count [.subscribers, .users-online]
+            3.5.4 Mod, theme & flair options
+                3.5.4.1 Mod option [.leavemoderator]
+                3.5.4.2 Theme & flair checkboxes [.sr_style_toggle]
+                3.5.4.3 Flair preview & options [.flairtoggle]
+        3.6 Sidebar tables [.side .md .table]
+        3.7 Sidebar Discord link
+        3.8 Flair filters & guidelines [href=]
+        3.9 Sidebar misc
+            3.9.1 Sidebar general styles
+            3.9.2 Sidebar titles & separators [.side .usertext blockquote]
+            3.9.3 Sidebar collapsible box (Moderation tools) [.sidecontentbox.collapsible]
+            3.9.4 Other side content boxes (Moderators, Recently viewed links) [.sidecontentbox]
+            3.9.5 'Created by' & Subreddit age [.titlebox .bottom, .titlebox .age]
+            3.9.7 Moderators list
+            3.9.8 Recently viewed links [.side .reddit-link]
+            3.9.9 'Account activity' link [.account-activity-box]
+            3.9.10 ProCSS banner
+            3.9.11 Signature
+            3.9.12 Reddit Premium Ad (vertical fix)
+
+    4. Sticky 'quick links' bar
+
+    5. Content
+        5.1 Global content styles
+        5.2 Linklisting
+            5.2.1 Sitetable links [.sitetable .link]
+            5.2.2 Stickied post ('Announcement') [.stickied.link]
+            5.2.3 Expandable content preview
+            5.2.4 Approval checkmark (green tick)
+        5.3 Report management
+
+    6. Thread page
+        6.1 'All x comments' [.panestack-title]
+        6.2 'Sorted by' and OP/mod actions [.menuarea]
+        6.3 Main comment field [.usertext-edit]
+            6.3.1 Field itself [.usertext-edit, textarea]
+            6.3.2 'Save' button, 'Content policy' & 'Formatting help' [.bottom-area]
+            6.3.3 Formatting help [.usertext .markhelp]
+            6.3.4 'Highlight comments posted since previous visit' [.gold-accent, .new-comment]
+        6.4 Comments [.comment]
+            6.4.1 Comment area general styles
+            6.4.2 Username [.author]
+                6.4.2.1 User attributes [.userattrs]
+
+    7. Footer [.footer]
+
+    8. Subreddit settings page
+
+    9. Submit page
+
+    10. User flair [.flair]
+
+    11. Hectorlizard's Flair selector [.flairselector]
+        11.1 Header & global
+        11.2 Middle scrollable area [.optionpane]
+        11.3 Bottom preview area
+
+    12. RES fixes
+
+
+----------------------------------------------------
+
+
+    Hector color system
+
+        MAIN COLOR
+            — Header highlights & body links: #0046AC 
+
+        TEXT
+            — Regular text on bg: #000002
+            — Secondary text on bg: #151515
+            — Medium importance text on bg (highlight comments option, etc): #1F1F1F
+
+        STANDARD BUTTONS
+            — Buttons (text & borders): #000001
+            — Buttons (active background) : #DFDFDF
+            — Button hover shadows: rgba(0,0,1,1)
+            — Button active shadows: rgba(0,0,2,1)
+
+        SUBMIT BUTTONS
+            — Background: #E0F3EA
+            — Hover background: #FFFFFA
+                — Hover shadow/glow: rgba(0,0,3,.8)
+
+        MISC
+            — Separators: rgba(0,0,1,.2)
+            — Search dropdown background : #B8CED3
+              (blur effect removed due to incompatibility with latest Firefox builds)
+
+
+----------------------------------------------------
+
+
+/*
+    1.  Global Styles
+*/
+
+    /*
+        1.1 Text & links
+    */
+
+        /* Global font override */
+
+            body, textarea, input, .linkinfo, .flair, #search input[type=text], .flairselector .flairremove {
+                font-family: -apple-system, BlinkMacSystemFont, "Roboto", arial, sans-serif;
+            }
+
+        body {
+            min-height: 100%;
+            position: relative;
+            top: 15px;
+            overflow-x: hidden;
+            color: black;
+            background-color: #000;
+        }
+
+            body:before {
+                content: " ";
+                position: fixed;
+                z-index: -99;
+                display: block;
+                width: 100%;
+                height: 100vh;
+                top: 0;
+                bottom: 0;
+                background: url(%%bg%%) no-repeat center top;
+                background-attachment: fixed;
+                background-size: cover
+            }
+
+            body:after {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 211px;
+                height: 1px;
+                width: calc(100% - 130px);
+                margin-left: 65px;
+                margin-right: 65px;
+                background-color: rgba(0,0,1,.2);
+            }
+
+            #body { padding-right: 0px }
+
+        /* Default links */
+
+            a { color: #151515; text-decoration: none !important }
+            a:hover, a:focus {color: #151515; text-decoration: underline }
+            a:visited { color: #151515 }
+
+        /* Markdown */
+
+
+            /* Body */
+
+                .md { color: black }
+
+            /* Links [.md a] */
+
+                .md a, .md a:visited { color: #0046AC; text-decoration: none }
+                .md a:hover, .md a:visited:hover { color: #0046AC; text-decoration: underline !important }
+
+            /* Horizontal rule */
+
+                .md hr {
+                    height: 1px;
+                    background: rgba(0,0,0,.1)
+                }
+
+            /* Quote */
+
+                .md blockquote {
+                    border-left: 2px solid #9F9F9F;
+                    color: #9F9F9F
+                }
+
+            /* Strikethrough */
+            
+                .md del { color: #9F9F9F }
+
+            /* Code & preformatted text */
+
+                .md code, .md pre {
+                    font-family: Menlo, Consolas, monospace;
+                    color: rgba(255,255,255,.5);
+                    font-size: 11px;
+                    border: none;
+                    border-radius: 5px
+                }
+
+                .md code {background-color: transparent !important }
+
+                .md pre { background-color: rgba(0,0,0,.3) !important }
+
+        /* Spoiler tags ("[This is a spoiler sentence.](/spoiler)") */
+
+            a[href$="#spoiler"] {  
+            background: transparent !important;  
+            color: transparent !important;
+            text-shadow: 0 0 8px #fff;
+            margin-left: 4px;
+            margin-right: 4px;
+            transition: all .5s ease-in-out
+            }  
+
+            a[href$="#spoiler"]:hover {  
+            color: black !important;
+            text-shadow: none;
+            text-decoration: none !important
+            }  
+
+            a[href$="#s"] {  
+            background: transparent; !important;  
+            color: black !important  
+            }  
+
+            a[href$="#s"]:hover {  
+            color: black !important  
+            }  
+
+    /*
+        1.2 Buttons
+    */
+
+        button, .nav-buttons a {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1.12px;
+            text-transform: uppercase !important;
+            color: #000001 !important;
+            background: transparent !important;
+            text-decoration: none;
+            border: 1px solid #000001 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 0px 0px 0px rgba(29,82,80,0.4);
+            transition: all 0.2s ease;
+            text-align: center;
+            padding: 5px 20px 5px 20px
+        }
+
+            button:hover, .nav-buttons a:hover {
+                background: #fff !important;
+                border: 1px solid #fff !important;
+                color: black !important;
+                box-shadow: 0 5px 11px -4px rgba(0,0,1,1)
+            }
+
+                button a:hover {
+                    color: black !important;
+                }
+
+            button:active, .nav-buttons a:active {
+                background: #DFDFDF !important;
+                border: 1px solid #DFDFDF !important;
+                color: black !important;
+                box-shadow: 0 2px 4px -2px rgba(0,0,2,1)
+            }
+
+                button a:active {
+                    color: black !important;
+                }
+
+        .nav-buttons {
+            padding: 0;
+            padding-top: 16px;
+            border-top: none
+        }
+
+            .nav-buttons a {
+                border-radius: 2px;
+                border-width: 0px;
+                background-color: #f5f5f5;
+                color: #42a5f5
+            }
+
+            .nav-buttons .nextprev {
+                font-size: 11px !important;
+                font-weight: normal !important;
+                color: #1F1F1F !important;
+                text-transform: uppercase;
+                letter-spacing: 1.12px
+            }
+
+    /*
+        1.3 Tables
+        -> See 3.6 for Sidebar tables
+    */
+
+        table {
+            padding: 0 0 0 0 !important;
+            margin: 5px 0 0 0 !important;
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            border: none !important;
+            background-color: transparent;
+            width: auto
+        }
+
+            tbody {
+                margin: 0 0 !important;
+                font-size: 13px;
+                color: black !important
+            }
+
+                tbody a {
+                    color: #0046AC !important
+                }
+
+                    tbody a:hover {
+                        text-decoration: underline !important
+                    }
+
+            th {
+                padding-left: 10px !important;
+                padding-right: 10px !important;
+                border: none !important;
+                font-size: 11px;
+                font-weight: 400 !important;
+                color: rgba(255,255,255,.6)
+            }
+
+            td {
+                border-top: 1px solid rgba(0,0,1,.2) !important;
+                border-right: none !important;
+                border-bottom: none !important;
+                border-left: none !important;
+                background-color: transparent;
+                padding-left: 20 !important;
+                padding-right: 20 !important;
+                padding-top: 5px !important;
+                padding-bottom: 6px !important
+            }
+
+    /*
+        1.4 Link flair [.linkflairlabel]
+        -> Don't forget to duplicate specific colors if you use Flair filters & guidelines (see 3.8)
+    */
+
+        /* Generic rules */ .linkflairlabel {
+            border-radius: 20px;
+            text-transform: uppercase;
+            border: none;
+            font-size: 9px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            color: white;
+            background: rgba(0,0,0,.7);
+            padding: 1px 6px 1px 7px;
+            position: relative;
+            top: 3px;
+            left: 4px;
+            float: right
+        }
+
+        /* Specific colors */
+
+            /* YOUR FLAIR 1 */ .linkflair-___YOUR-FLAIR___ .linkflairlabel
+                            { background: #DAB01E !important }
+
+            /* YOUR FLAIR 2 */ .linkflair-___YOUR-FLAIR___ .linkflairlabel
+                            { background: #7FD837 !important }
+
+            /* YOUR FLAIR 3 */ .linkflair-___YOUR-FLAIR___ .linkflairlabel
+                            { background: #3BD793 !important }
+
+/*
+    2.  Header [#header]
+*/
+
+    #header {
+        height: 198px;
+        background: transparent;
+        background-size: 500px 198px;
+        background-color: transparent;
+        border-bottom: none;
+        margin-bottom: 25px;
+    }
+
+    /* 2.1  Subreddit List [#sr-header-area] */
+
+            #sr-header-area {
+              background-color: #fff;
+              height: 15px;
+              max-height: 20px!important;
+              padding-top: 3px;
+              padding-bottom: 3px;
+              color: #8B8B8B;
+              font-size: 9px;
+              letter-spacing: normal;
+              font-weight: 600;
+              text-transform: none;
+              border: none;
+              box-shadow: 0 1px 0 0 rgba(0,0,0,0.15);
+              transform: translateY(-18px);
+              position: relative;
+              z-index: 1;
+            }
+
+        /* 2.1.1  Dropdown List [.selected, .drop-choices] */
+
+            #sr-header-area .dropdown.srdrop {
+                padding-left: 65px;
+                color: rgba(216,216,216, 0.75)
+            }
+
+            .dropdown.srdrop .selected {
+                color: #8B8B8B;
+                text-transform: capitalize;
+                background-image: none;
+                font-weight: 500;
+                padding-right: 8px;
+                margin-right: 18px;
+                transition: all .1s ease-in-out
+            }
+
+                .dropdown.srdrop .selected:after {
+                    content: "";
+                    display: inline-block;
+                    position: relative;
+                    width: 6px;
+                    height: 5px;
+                    margin-left: 2px;
+                    background-image: url(%%spritesheet-hector%%);
+                    background-size: 381px 64px;
+                    background-position: -340px 0
+                }
+
+                .dropdown.srdrop .selected:hover { color: black }
+
+                    .dropdown.srdrop .selected:hover:after { background-position: -346px 0 }
+
+            .drop-choices.srdrop {
+                position: absolute;
+                left: 40px !important;
+                top: 16px !important;
+                font-size: 12px;
+                font-weight: 400;
+                text-transform: none;
+                letter-spacing: normal;
+                border-radius: 4px;
+                border: none;
+                background: #aeb0b2 url(%%sr-drop-bg%%) top left repeat-x;
+                white-space: nowrap;
+                line-height: 11px;
+                margin-top: 1px;
+                box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.35), 0px 0px 0px 1px rgba(0, 0, 0, 0.15);
+                padding: 4px 0px 4px 0px;
+                z-index: 1000 !important
+            }
+
+                .drop-choices.inuse {
+                    display: block;
+                    z-index: 1000 !important;
+                }
+
+                .drop-choices a.choice {
+                    cursor: pointer;
+                    padding: 2px 20px 3px 20px;
+                    display: block;
+                    color: black !important;
+                    z-index: 1000 !important
+                }
+
+                    .drop-choices.srdrop a.choice:hover {
+                        background-color: #227dd6 !important;
+                        z-index: 1000 !important;
+                        color: white !important
+                    }
+
+                    .drop-choices a.choice:hover {
+                        color: black !important;
+                        background-color: #227dd6;
+                        overflow: visible;
+                        z-index: 1000 !important
+                    }
+
+                    .drop-choices a.choice.selected {
+                        display: none;
+                        z-index: 1000 !important
+                    }
+
+                .srdrop .choice.bottom-option {
+                    border-top: 2px solid #a6a6a7;
+                    margin-top: 4px;
+                    padding-top: 4px;
+                    font-style: normal;
+                    overflow: visible;
+                    z-index: 1000 !important
+                }
+
+                    .srdrop .choice.bottom-option::first-letter {
+                        text-transform: capitalize !important
+                    }
+
+                    .srdrop .choice.bottom-option::after {
+                        content: "..."
+                    }
+
+                #sr-header-area .drop-choices.srdrop a {
+                    color: rgba(255, 255, 255, 0.4);
+                    z-index: 1000 !important
+                }
+
+                    #sr-header-area .drop-choices.srdrop a:hover {
+                        background-color: transparent;
+                        color: black;
+                        text-decoration: none
+                    }
+
+        /* 2.1.2  Subreddits bar [.sr-bar, .flat-list] */
+
+            .separator, .sr-bar .separator { color: transparent }
+
+            .flat-list { text-transform: capitalize }
+
+                .sr-bar a, .flat-list li a.gold {
+                    color: #8B8B8B; font-weight: normal;
+                    transition: all .1s ease-in-out
+                }
+
+                    .sr-bar a:hover, .flat-list li a.gold:hover { color: black }
+
+                    .sr-bar a:after {
+                        content: "/";
+                        padding-left: 2px;
+                        margin-right: -9px;
+                        color: #949494
+                    }
+
+                    .sr-bar li:last-child a:after {
+                        content: " ";
+                        padding-right: 0px
+                    }
+
+        /* 2.1.3  'Edit»' link [#sr-more-link] */
+
+            #sr-more-link {
+                height: 17px;
+                width: 85px;
+                color: #8B8B8B;
+                font-weight: 500;
+                text-transform: capitalize;
+                margin: 0 0 0 0;
+                padding-top: 0px;
+                border-left: none;
+                background-color: white
+            }
+
+                #sr-more-link:hover {color: #494949}
+
+                #sr-more-link:after {
+                    display: block;
+                    position: relative;
+                    top: -13px;
+                    left: -15px;
+                    content: "";
+                    width: 1px;
+                    height: 9px;
+                    background-color: #949494;
+                    opacity: 0.75
+                }
+
+        /* 2.1.4  Hide 'Visit new Reddit' */
+
+            #sr-header-area .redesign-beta-optin {
+                display: none
+            }
+
+    /*
+        2.2  Main Header [#header-bottom-left]
+    */              
+
+        #header-bottom-left {
+            font-size: 100%;
+            z-index: -1 !important;
+            margin-left: 3px
+        }
+
+        /*
+            2.2.1 Subreddit Title / Image logo version [.pagename]
+        */
+
+            /*
+            .pagename { font-size: 0 }
+
+                .pagename a {
+                    display: block;
+                    position: absolute;
+                    top: -5px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background: url(%%sublogo%%) no-repeat center;
+                    width: 450px;
+                    height: 156px;
+                    background-size: 450px 156px;
+                    margin: 15px 0 0 0;
+                    transition: all .12s ease-in-out;
+                }
+
+                    .pagename a:hover {
+                        display: block;
+                        position: absolute;
+                        top: -5px;
+                        left: 50%;
+                        transform: translateX(-50%);
+                        background: url(%%sublogo-hover%%) no-repeat center;;
+                        text-decoration: none;
+                        background-size: 450px 156px;
+                    }
+
+                        /* Preload hover state */
+
+                            /*
+                            .pagename a:after {
+                                display: block;
+                                content: "";
+                                position: absolute;
+                                top:0;
+                                left:0;
+                                width: 0px;
+                                height: 0px;
+                                margin:0;
+                                padding: 0;
+                                opacity: 0;
+                                background: url(%%sublogo-hover%%) !important;
+                            }
+
+                    .pagename a:active {
+                        background: url(%%sublogo-hover%%);
+                        background-size: 450px 156px;
+                        top: -4px
+                    }
+
+
+
+        /*
+            2.2.1 Subreddit Title / Text logo version [.pagename]
+        */
+
+
+            .pagename {
+                font-size: 0;
+                text-transform: none
+            }
+
+            .pagename a {
+                font-size: 30px;
+                font-weight: 700;
+                color: black;
+                position: absolute;
+                top: 78px;
+                left: 130px;
+                transition: all 0.15s ease;
+                font-variant: none
+            }
+
+                    .pagename a:hover {
+                        transform: scale(1.05);
+                    }
+
+
+        /*
+            2.2.2  Navigation [#header .tabmenu]
+        */
+
+           #header .tabmenu {
+                display: inline-block;
+                position: absolute;
+                z-index: -1;
+                bottom: 2px;
+                margin: 0;
+                margin-left: 48px;
+                line-height: 30px;
+                -webkit-transform: translate3d(0, 0, 0)
+            }
+
+                /* Hide unimportant tabs */
+
+                    /* Gilded (tab 6) */
+
+                        #header .tabmenu li:nth-of-type(6) {
+                            display:none;
+                            visibility:hidden
+                        }
+
+                    /* Wiki (tab 7) */
+
+                        #header .tabmenu li:nth-of-type(7) {
+                            /* display:none; */
+                            /* visibility:hidden */
+                        } 
+
+                    /* Promoted (tab 8) */
+
+                        #header .tabmenu li:nth-of-type(8) {
+                            display:none;
+                            visibility:hidden
+                        }
+
+                #header .tabmenu li, #header .tabmenu li a {
+                    display: inline-block;
+                    margin: 0;
+                    padding: 0;
+                    background: none;
+                    z-index: 1
+                }
+
+                    #header .tabmenu li a {
+                        position: relative;
+                        padding: 0 10px;
+                        font-size: 11px;
+                        color: rgba(0,0,0,.8);
+                        font-weight: 500;
+                        letter-spacing: 0.48px;
+                        text-transform: uppercase;
+                        border-radius: 2px;
+                        transition: all 0.2s ease;
+                        z-index: 1
+                    }
+
+                        #header .tabmenu li a:hover {color: black}
+
+                    #header .tabmenu li.selected a {color: black; border: 0; z-index: 1;}
+
+                        #header .tabmenu li a:after {
+                            position: absolute;
+                            right: 0;
+                            left: 0;
+                            bottom: -2px;
+                            margin: 0 10px;
+                            height: 0px;
+                            content: "";
+                            background: #0046AC;
+                            transition: all 0.2s ease;
+                            background: transparent;
+                            z-index: 1;
+                            transform: translateY(14px)
+                        }
+
+                            #header .tabmenu li a:hover:after,
+                            #header .tabmenu li.selected a:after {
+                                background: #0046AC;
+                                height: 3px;
+                                z-index: 1;
+                            }
+ 
+        /*
+            2.2.3  Animated Snoo icon [#header-img-a]
+        */
+
+            /* Default black Snoo */ #header-bottom-left #header-img-a {
+                display: block;
+                position: absolute;
+                left: 0px;
+                top: 5px;
+                content: "";
+                background: url(%%snoo-default%%);
+                background-size: 170px 170px;
+                width: 170px;
+                height: 170px;
+                transition: all 0.15s ease
+            }
+
+                /* Animatable Snoo on hover */
+
+                    #header-bottom-left #header-img-a:hover {
+                        background: url(%%snoos%%);
+                        background-size: 170px 170px;
+                        animation: snoos 3s steps(1) infinite
+                    }
+
+                        @keyframes snoos { 100% {background-position: -170px} }
+
+                    #header-bottom-left #header-img-a:active {
+                        opacity: 0.8;
+                        z-index: 10 !important
+                    }
+
+                    /* Preload hover state */
+
+                        .account-activity-box:after { background: url(%%snoos%%) }
+
+
+                /* Hide Snoo from 'Edit settings' */
+
+                    #header-bottom-left #header-img-a img { display: none }
+
+                /* Slash */
+
+                    #header-bottom-left #header-img-a:after {
+                        display: block;
+                        pointer-events: none;
+                        background: url(%%slash%%);
+                        width: 170px;
+                        height: 170px;
+                        background-size: 170px 170px;
+                        content: "";
+                        position: absolute;
+                        z-index: -1 !important
+                    }
+
+                        #header-bottom-left #header-img-a:hover:after {
+                            transform: none;
+                            z-index: -1 !important
+                        }
+
+    /*
+        2.3 User Menu [#header-bottom-right]
+    */
+
+        #header-bottom-right {
+            height: 30px;
+            margin: 43px;
+            margin-bottom: 0;
+            padding: 0 20px;
+            background: transparent;
+            font-size: 11px;
+            letter-spacing: 0.48px;
+            line-height: 30px;
+            text-transform: uppercase;
+            -webkit-transform: translate3d(0, 0, 0);
+            transition: transform 0.1 ease-in-out
+        }
+
+            #header-bottom-right #mail:hover,
+            #header-bottom-right #modmail:hover,
+            #header-bottom-right #new_modmail:hover,
+            #header-bottom-right a.pref-lang:hover,
+            .loggedin .logout a:hover, {
+                transform: scale(1.15)
+            }
+
+            #header-bottom-right #mail:active,
+            #header-bottom-right #modmail:active,
+            #header-bottom-right #new_modmail:active,
+            #header-bottom-right a.pref-lang:active,
+            .loggedin .logout a:active {
+                transform: scale(1)
+            }
+
+            #header-bottom-right a {
+                color: #0046AC; opacity: 1;
+                transition: all 0.2s ease
+            }
+
+                #header-bottom-right a:hover { text-decoration: underline !important }
+
+                #header-bottom-right .user a.login-required {color: #0069e1}
+
+                    #header-bottom-right .user a.login-required:before { content: "" }
+
+                .loggedin #header-bottom-right .user {
+                    color: transparent;
+                    margin-right: -8px
+                }
+
+                #header-bottom-right .user {
+                    position: relative;
+                    top: -2px
+                }
+
+                #header-bottom-right .user a {
+                    font-weight: 700 !important;
+                    margin-right: 0px;
+                    padding-right: 0px
+                }
+
+                #header-bottom-right .user .userkarma {
+                    color: black;
+                    font-weight: 500 !important;
+                    margin-left: 0px;
+                    padding-left: 0px
+                }
+
+                    #header-bottom-right .user .userkarma:before {
+                        content: "(";
+                        display: inline-block;
+                        margin-right: 0;
+                        color: black;
+                        background-position: 0 0
+                    }
+
+                    #header-bottom-right .user .userkarma:after {
+                        content: ")";
+                        display: inline-block;
+                        margin-right: 4px;
+                        color: black;
+                        background-position: 0 0
+                    }
+
+                #header-bottom-right .separator { visibility: hidden }
+
+        /*
+            2.3.1  Mail [#mail, #modmail]
+        */
+
+            #header-bottom-right #mail,
+            #header-bottom-right #modmail,
+            #header-bottom-right #new_modmail {
+                height: 20px;
+                width: 20px;
+                background-image: url(%%spritesheet-hector%%);
+                background-size: 381px 64px;
+                background-color: transparent;
+                border-radius: 2px;
+                opacity: 1;
+                transition: all 0.2s ease
+            }
+
+                #header-bottom-right #mail { top: 3px }
+
+                    #header-bottom-right #mail.nohavemail { background-position: -261px -20px }
+
+                    #header-bottom-right #mail.havemail { background-position: -261px -40px }               
+
+                    #header-bottom-right .message-count {
+                        background-color: #FA3E3E;
+                        color: #fff !important;
+                        border-radius: 2px;
+                        font-size: 10px;
+                        letter-spacing: 0.3;
+                        line-height: 14px;
+                        font-weight: bold;
+                        padding: 0px 3px 0px 3px;
+                        height: 15px;
+                        position: relative;
+                        top: -9px;
+                        left: -6px;
+                        margin: -9px -12px 0 0;
+                        z-index: 100;
+                        box-shadow: 0 0 0 1px rgba(24,38,45,0.80);
+                    }
+
+                #header-bottom-right #modmail { top: -4px }
+
+                    #header-bottom-right #modmail.nohavemail { background-position: -281px -20px }
+
+                    #header-bottom-right #modmail.havemail { background-position: -281px -40px }
+
+                    #header-bottom-right #new_modmail.nohavemail {
+                        background-position: -301px -20px;
+                        top: -2px !important
+                    }
+
+                    #header-bottom-right #new_modmail.havemail {
+                        background-position: -301px -40px;
+                        top: -2px !important
+                    }
+
+        /*
+            2.3.2  Preferences & Logout [.pref-lang, .loggedin .logout]
+        */
+
+            #header-bottom-right a.pref-lang, .loggedin .logout a {
+                display: inline-block;
+                position: relative;
+                top: 3px;
+                margin: 0px;
+                height: 20px;
+                width: 20px;
+                text-indent: -9999px;
+                background-image: url(%%spritesheet-hector%%);
+                background-size: 381px 64px;
+                border-radius: 2px;
+                opacity: 1;
+                transition: all 0.2s ease
+            }
+
+            /* Preferences */
+
+                #header-bottom-right a.pref-lang { background-position: -321px -20px }
+
+            /* Logout */
+
+                .loggedin .logout a { background-position: -341px -20px }
+
+
+        /*
+            2.3.3  Chat icon
+        */
+
+            #chat {
+                height: 20px;
+                width: 20px;
+                background-position: -361px -20px;
+                background-image: url(%%spritesheet-hector%%);
+                background-size: 381px 64px;
+                transform: translateY(-3px);
+            }
+
+            #chat.active {
+                background-image: url(%%spritesheet-hector%%);
+                background-position: -361px -40px;
+                background-size: 381px 64px;
+            }
+
+/*
+    3.  Sidebar [.side]
+*/
+
+    .side {
+        float: right;
+        margin-top: 15px;
+        margin-right: 52px;
+        width: 312px;
+        background: transparent;
+        text-align: left;
+        overflow: hidden
+    }
+
+        .side .md { text-align: left ; color: #000002 }
+
+            .side .md p { color: #000002 }
+
+                .side .md p em {
+                    color: #000002;
+                    font-style: normal !important;
+                    font-weight: 400
+        }
+
+    /*
+        3.1 Search bar [#search]
+    */
+
+        /* The "Search" text input */
+
+            #search input[type=text] {
+                border-bottom: 1px solid rgba(0,0,0,.4) !important;
+                box-shadow: 0 4px 0 0 rgba(255,255,255,0.40);
+                font-size: 14px;
+                font-weight: 500;
+                text-transform: capitalize;
+                width: 274px;
+                padding: 6px 6px 6px 0;
+                vertical-align:middle;
+                border-radius: 0px;
+                background-image: none !important;
+                background-color: transparent !important;
+                box-shadow: none !important;
+                margin: 0 10px 23px 0;
+            }
+
+            #search input::placeholder {
+                color: black;
+            }
+
+        /* The "􀊫" submit button */
+
+            #search input[type=submit] {
+                background-color: rgba(255,0,0,.5);
+                box-shadow: none !important;
+                background: url(%%spritesheet-hector%%) !important;
+                background-position: -132px -45px !important;
+                background-size: 381px 64px !important;
+                width: 20px !important;
+                height: 19px !important;
+                background-repeat: no-repeat !important;
+                border: none;
+                padding: 0 !important;
+                margin: 0;
+                vertical-align:top;
+                display: inline;
+                visibility: visible;
+                box-sizing: border-box;
+                transform: translateY(6px) !important;
+            }
+
+                #search input[type=submit]:hover {
+                    background: url(%%spritesheet-hector%%) !important;
+                    background-position: -164px -45px !important;
+                    background-size: 381px 64px !important;
+                    background-repeat: no-repeat !important;
+                }
+
+        /* Search options expandable menu */
+
+            #searchexpando {
+                width: 275px !important;
+                max-width: 275px;
+                box-sizing: border-box;
+                /* Cool blur panel effect removed due to Firefox incompatibility */
+                    /* background: url(%%blur-small%%) no-repeat center top;
+                        background-color: rgba(255,255,255,0.2);
+                        background-attachment: fixed;
+                        background-size: cover; */
+                background-color: #B8CED3;
+                border: none;
+                border-radius: 6px;
+                box-shadow: 0 8px 23px -9px #000000;
+                text-transform: capitalize !important;
+                padding: 12px 15px 5px 14px;
+                transform: translateY(-23px);
+            }
+
+                #searchexpando input[type=checkbox] {
+                    margin-right: 10px;
+                    transform: translateY(-3px);
+                }
+
+                /* "Advanced Search: By Author, Subreddit..." */
+
+                    #moresearchinfo {
+                        display: none;
+                        padding-top: 10px;
+                        max-width: 300px;
+                        border-top: 1px solid rgba(255,255,255,.15);
+                        margin-top: 5px
+                    }
+
+                        /* Search parameters in Advanced Search */
+
+                            #moresearchinfo dt {
+                                margin: 5px;
+                            }
+
+
+
+    /*
+        3.2 Login form [.login-form-side]
+    */
+
+        .login-form-side {
+            width: 300px;
+            border: none;
+            border-top: 1px solid rgba(0,0,1,.2);
+            border-bottom: 1px solid rgba(0,0,1,.2);
+            padding: 25px 0 10px 0;
+            margin-bottom: 15px;
+        }
+
+            .login-form-side input[type=text], .login-form-side input[type=password] {
+                font-family: -apple-system, BlinkMacSystemFont, "Roboto", arial, sans-serif;
+                background: transparent !important;
+                font-size: 12px !important;
+                border: none;
+                border-bottom: 1px solid #151515;
+                padding: 0px;
+                margin: 0 5px 0 0;
+            }
+
+    /*
+        3.3 Link metadata [.linkinfo]
+    */
+
+        .linkinfo {
+            padding: 0px;
+            border: none;
+            background-color: transparent;
+            border-radius: 0px;
+            margin-top: 15px;
+            border-top: 1px solid rgba(0,0,1,.2);
+            border-bottom: 1px solid rgba(0,0,1,.2);
+            padding-top: 18px;
+            color: #151515;
+            padding-bottom: 29px;
+            margin-bottom: 25px;
+            width: 300px
+        }
+
+            .linkinfo .date {
+                font-size: 10px;
+                color: #000002;
+                font-weight: 500;
+                letter-spacing: 0.1px;
+            }
+
+                .linkinfo .date::first-letter {text-transform: uppercase;}
+
+            /* % upvoted */ .linkinfo .score {
+                color: #151515 !important;
+            }
+
+                .linkinfo .score .number {
+                    font-size: 20px;
+                    font-weight: 600;
+                    color: #000002;
+                }
+
+                    .linkinfo .score .word {
+                        font-size: 14px;
+                        color: #000002;
+                        font-weight: 600
+                    }
+
+            .linkinfo .shortlink {
+                font-size: 10px;
+                color: #151515;
+                text-transform: capitalize;
+                letter-spacing: normal;
+                margin-top: 3px;
+                font-weight: 600px;
+                margin-top: 0px;
+            }
+
+                .linkinfo .shortlink input {
+                    border: none;
+                    font-family: Menlo, Consolas, monospace !important;
+                    font-size: 13px;
+                    color: #151515;
+                    padding: 3px 2px;
+                    width: 175px;
+                    background: transparent;
+                }
+
+                    .linkinfo .shortlink input:hover {
+                        cursor: text
+                    }
+
+            .linkinfo table {
+                margin-top: 5px
+            }
+
+                .linkinfo td, .linkinfo th {
+                    padding: 2px;
+                    font-size: smaller;
+                    border: 1px solid gray
+                }
+
+    /*
+        3.4 Submit & sub creation buttons [.morelink]
+    */
+
+        .morelink {
+                position: absolute;
+                height: 23px;
+                width: 138px;
+                font-size: 11px;
+                font-weight: 600;
+                line-height: 23px;
+                letter-spacing: 1.12px;
+                text-transform: uppercase;
+                background: linear-gradient(to right, #E0F3EA, #E0F3EA);
+                border: 1px solid transparent;
+                border-radius: 20px;
+                box-shadow: 0 0px 0px 0px rgba(29,82,80,0.4);
+                transition: all 0.2s ease !important;
+                color: black !important
+            }
+
+                .morelink a { color: black !important}
+
+                    .morelink:hover {
+                        background: linear-gradient(to right, #FFFFFA, #FFFFFA);
+                        color: black !important;
+                        box-shadow: 0 8px 13px -6px rgba(0,0,3,.8);
+                        border: 1px solid transparent;   
+                    }
+
+                        .morelink a:hover { color: black !important }
+
+                    .morelink:active {
+                        background: linear-gradient(to right, rgba(0,0,0,.2), rgba(0,0,0,.2)), linear-gradient(to right, #FFFFFX, #FFFFFX);
+                        box-shadow: 0 6px 9px -6px rgba(0,0,3,.8);
+                        color: black !important;
+                        border: 1px solid transparent;
+                    }
+
+                        .morelink a:active { color: black !important }
+
+                    .disabled .morelink,
+                    .disabled .morelink:hover,
+                    .disabled .morelink:active {
+                        background: none;
+                        background-color: #f5f5f5;
+                        border-bottom-right-radius: 0;
+                        border-bottom-left-radius: 0;
+                        box-shadow: none;
+                    }
+
+                .morelink .nub { display: none; }
+
+                .submit-text .morelink { right: 65px; color: white}
+
+        .sidebox .submit { border-top: 2px solid white }
+
+                .sidebox.submit.submit-link a:before {
+                    display: inline-block;
+                    content: "";
+                    background: url(%%spritesheet-hector%%);
+                    background-size: 381px 64px;
+                    background-position: -46px 0;
+                    width: 13px;
+                    height: 13px;
+                    margin-right: 5px;
+                    transform: translateY(2px)
+                }
+
+                    .sidebox.submit.submit-link a:hover:before { background-position: -46px -40px !important }
+
+                .sidebox.submit.submit-text a:before {
+                    display: inline-block;
+                    content: "";
+                    background: url(%%spritesheet-hector%%);
+                    background-size: 381px 64px;
+                    background-position: -72px 0;
+                    width: 13px;
+                    height: 13px;
+                    margin-right: 5px;
+                    transform: translateY(2px)
+                }
+
+                    .sidebox.submit.submit-text a:hover:before { background-position: -72px -40px !important }
+
+            .sidebox.submit.disabled { box-shadow: -0.1px 1px 1px 0 rgba(0, 0, 0, 0.1) }
+
+            .submit .spacer.no-icon {
+                padding: 5px;
+                text-align: center;
+                border-top: 1px solid #efefed;
+                border-bottom-right-radius: 2px;
+                border-bottom-left-radius: 2px;
+            }
+
+                .submit .spacer.no-icon .subtitle {
+                    margin: 0;
+                    font-size: 100%;
+                    color: #aaa;
+                }
+
+    /*
+        3.5 Titlebox [.titlebox]
+    */
+
+        .titlebox {margin-top: 84px}
+
+            .titlebox:before {
+                display: block;
+                content: "";
+                width: 300px;
+                height: 1px;
+                background-color: rgba(0,0,1,.4)
+            }
+
+            .titlebox::first-letter,
+            .titlebox form.toggle::first-letter,
+            .leavemoderator::first-letter {
+                text-transform: capitalize !important
+            }
+
+        /*
+            3.5.1 Sidebar Subreddit title [.titlebox h1]
+            -> Uncomment the one you want to use (text version is the default one)
+        */
+
+            /* Logo version */
+
+                /*
+                .titlebox h1 {
+                    margin-top: 25px;
+                    padding-top: 0px;
+                    width: 100%;
+                    height: 70px !important;
+                    font-size: 0px;
+                    display: inline-block !important;
+                    text-align: center !important;
+                    margin-left: 0px;
+                    margin-bottom: 12px;
+                    background: url(%%titlebox%%) no-repeat center;
+                    background-size: 300px 70px
+                }
+                */
+
+            /* Text version */
+
+
+                .titlebox h1 {
+                    width: 300px;
+                    height: 48px;
+                    text-align: center;
+                    font-size: 25px;
+                    font-family: -apple-system, BlinkMacSystemFont, "Roboto", arial, sans-serif !important;
+                    letter-spacing: .2px;
+                    margin: 25px 0 10px 0;
+                    padding: 0;
+                    opacity: .4;
+                }
+
+                    .titlebox h1 a {
+                        color: black !important;
+                        font-weight: 700 !important
+                    }
+
+                    .titlebox h1:before {
+                        content: "r/";
+                        display: inline
+                    }
+
+        /*
+            3.5.2 Subscribe/unsubscribe buttons
+        */
+
+            .fancy-toggle-button .add, .fancy-toggle-button .remove {
+                padding: 5px 30px;
+                border-radius: 20px;
+                position: relative;
+                left: 0%;
+                height: 25px;
+                font-weight: 600;
+                line-height: 25px;
+                letter-spacing: 1.12px;
+                text-transform: uppercase;
+                color: #000001;
+                background: transparent;
+                font-size: 11px !important;
+                border-radius: 20px !important;
+                box-shadow: 0 0px 0px 0px rgba(29,82,80,0.4);
+                transition: all 0.2s ease;
+            }
+
+            .titlebox {text-align: center;}
+
+            .fancy-toggle-button .add, .fancy-toggle-button .remove,
+            .res .fancy-toggle-button .add, .res .fancy-toggle-button .remove {
+                font-size: 11px !important;
+                text-transform: uppercase;
+                transition: .2s;
+                background-image: none !important;
+                outline-width: 0 !important;
+                outline: none !important;
+            }
+
+            .fancy-toggle-button .add {background: transparent}
+            
+                .fancy-toggle-button .add:before {
+                    display: inline-block;
+                    content: "";
+                    background: url(%%spritesheet-hector%%);
+                    background-size: 381px 64px;
+                    background-position: -33px 0;
+                    width: 13px;
+                    height: 13px;
+                    margin-right: 5px;
+                    transform: translateY(2px);
+                }
+
+                .fancy-toggle-button .add:hover {
+                            background: #fff !important;
+                            border: 1px solid #fff !important;
+                            color: black !important;
+                            box-shadow: 0 5px 11px -4px rgba(0,0,1,1);
+                            background-position: -33px -40px
+                }
+
+                    .RESDashboardToggle:active,
+                    .fancy-toggle-button .add:active,
+                    body.res .RESshortcutside:active {
+                                background: #DFDFDF !important;
+                                border: 1px solid #DFDFDF !important;
+                                color: black !important;
+                                box-shadow: 0 2px 4px -2px rgba(0,0,2,1);
+                    }
+
+            .fancy-toggle-button .remove {background: transparent;}
+                .fancy-toggle-button .remove:before {
+                display: inline-block;
+                content: "";
+                background: url(%%spritesheet-hector%%);
+                background-size: 381px 64px;
+                background-position: -59px 0;
+                width: 13px;
+                height: 13px;
+                margin-right: 5px;
+                transform: translateY(2px)
+            }
+
+                .fancy-toggle-button .remove:hover {
+                            background: #fff;
+                            border: 1px solid #fff !important;
+                            color: black !important;
+                            box-shadow: 0 5px 11px -4px rgba(0,0,1,1);
+                            background-position: -59px -40px
+                }
+
+                .fancy-toggle-button .remove:active {
+                            background: #DFDFDF !important;
+                            border: 1px solid #DFDFDF !important;
+                            color: black !important;
+                            box-shadow: 0 2px 4px -2px rgba(0,0,2,1);
+                }
+
+                .fancy-toggle-button .add, .fancy-toggle-button .remove,
+                .res .fancy-toggle-button .add, .res .fancy-toggle-button .remove {
+                    font-size: 11px !important;
+                    border: 1px solid #000001;
+                    text-transform: uppercase;
+                    transition: .2s;
+                    background-image: none !important
+                }
+
+            .titlebox h1.redditname {
+                width: 100%;
+                text-align: center
+            }
+
+            .titlebox .redditname {
+                height: 25px
+            }
+
+            .res .titlebox .fancy-toggle-button {
+                display: inline-block;
+                margin-top: 10px;
+                margin-right: 5px;
+                margin-left: 0;
+                width: auto
+            }
+
+            .titlebox .fancy-toggle-button {
+                margin: 4px auto 0;
+                width: 100%;
+                display: inline-block;
+                transition: .3s
+            }
+
+        /*
+            3.5.3 Subscribers & online users count [.subscribers, .users-online]
+        */
+
+            .subscribers, .users-online {
+                color: #000002;
+                font-size: 15px;
+                letter-spacing: normal;
+                font-weight: 500;
+                position: relative;
+                margin-bottom: -16px
+            }
+
+            .subscribers {
+                left: -25%;
+                top: 12px
+            }
+
+                .subscribers .word { display: none }
+
+                .subscribers .number::after {
+                    content: " readers";
+                    font-size: 10px;
+                    display: block
+                }
+
+                .subscribers .number::before { display: none }
+
+                /* Vertical separator */ .subscribers:after {
+                    display: block;
+                    position: absolute;
+                    content: "";
+                    width: 1px;
+                    height: 26px;
+                    background-color: rgba(0,0,1,.2);
+                    left: 236px;
+                    top: -26px;
+                }
+
+            .users-online {
+                left: 25%;
+                top: -18px
+            }
+
+                /* Green dot */ .users-online:before {
+                    display: inline-block;
+                    float: none;
+                    background: #41E527;
+                    border: none;
+                    border-radius: 20px;
+                    width: 8px;
+                    height: 8px
+                }
+
+                .users-online .word { display: none }
+
+                .users-online .number::after {
+                    content: " online";
+                    font-size: 10px;
+                    display: block
+                }
+
+        /*
+            3.5.4 Mod, theme & flair options
+        */
+
+            /*
+                3.5.4.1 Mod option [.leavemoderator]
+            */
+
+                .titlebox .leavemoderator {
+                    display: block;
+                    width: 280px;
+                    margin: 19px 0 0px;
+                    padding: 0 5px 0px;
+                    color: #151515 !important;
+                    background: transparent;
+                    font-size: 10px;
+                    text-align: left;
+                    line-height: 16px;
+                }
+
+                .titlebox form.leavemoderator-button {
+                    color: #151515;
+                    position: absolute !important;
+                    display: block !important;
+                    text-align: right !important;
+                }
+
+                .titlebox .leavemoderator, .titlebox form.leavecontributor-button {
+                    font-size: 0;
+                }
+
+                    .titlebox .leavemoderator:before {
+                        background: url(%%spritesheet-hector%%);
+                        background-size: 381px 64px;
+                        background-position: -327px 0 !important;
+                        width: 12.5px;
+                        height: 15px;
+                        transform: translateX(-4px)
+                    }
+
+                    .titlebox form.leavecontributor-button:before {
+                        background: none
+                    }
+
+                        .titlebox .leavemoderator:before {
+                            background-position: -32px -32px;
+                        }
+
+                        .titlebox form.leavecontributor-button:before {
+                            background-position: -48px -32px;
+                        }
+
+                    .titlebox .leavemoderator:after,
+                    .titlebox form.leavecontributor-button:after {
+                        font-size: 10px;
+                        line-height: 12px;
+                        vertical-align: middle;
+                    }
+
+                        .titlebox .leavemoderator:after {
+                            content: "Moderator"
+                        }
+                        .titlebox form.leavecontributor-button:after {
+                            content: "Approved Submitter"
+                        }
+
+                    /* 'Change' link next to 'Moderator' */ .titlebox .leavemoderator a,
+                    .titlebox form.leavecontributor-button a {
+                        position: absolute;
+                        right: 66px;
+                        font-size: 10px;
+                        text-transform: capitalize;
+                        color: #151515;
+                    }
+
+                        .titlebox .leavemoderator a:hover,
+                        .titlebox form.leavecontributor-button a:hover {
+                            color: #151515;
+                            text-decoration: underline !important;
+                        }
+
+                    .leavecontributor-button .option.active.error {
+                        display: block;
+                        font-size: 10px;
+                    }
+
+                        .option.active.error a { position: inherit; }
+
+            /*
+                3.5.4.2 Theme & flair checkboxes [.sr_style_toggle]
+            */
+
+                .titlebox form.sr_style_toggle, .titlebox form.flairtoggle {
+                    font-size: 10px;
+                    line-height: normal;
+                    margin-top: 0px;
+                    padding-top: 0px;
+                    transform: translateX(0px)
+                }
+
+                    .sr_style_toggle, .flairtoggle {
+                        text-align: left !important;
+                        font-size: 10px !important;
+                        color: #151515 !important;
+                    }
+
+                    .titlebox form.flairtoggle {
+                        margin-bottom: 5px;
+                        padding-bottom: 0px;
+                        padding-top: 0px;
+                        margin-top: 2px;
+                        color: #151515 !important;
+                        font-size: 10px !important
+                    }
+
+                 /* 'Show my flair on this subreddit' and 'Enable Theme' labels (after the checkboxs) */
+                    .flairtoggle label,
+                    .sr_style_toggle label { 
+                      position:relative; 
+                      top: 3px;
+                      left: 4px;
+                      font-size: 10px !important;
+                      color: #151515 !important;
+                    }
+
+                .flairtoggle,
+                .sr_style_toggle,
+                .leavecontributor-button,
+                .leavemoderator {
+                    background-color: transparent !important
+                }
+
+                .leavecontributor-button { display: none !important }
+
+                /* Checkboxes */
+
+                    form input[type=checkbox] {
+                        visibility: hidden;
+                        margin-bottom: 6px;
+                        margin-top: 3px
+                    }
+
+                        form input[type=checkbox]:after {
+                            display: inline-block;
+                            visibility: visible;
+                            content: "";
+                            width: 16px;
+                            height: 16px;
+                            background-image: url(%%spritesheet-hector%%) !important;
+                            background-size: 381px 64px;
+                            background-position: -100px 0;
+                        }
+
+                            form input[type=checkbox]:active:after { background-position: -116px 0 }
+
+                            form input[type=checkbox]:checked:after { background-position: -84px 0 }
+
+            /*
+                3.5.4.3 Flair preview & options [.flairtoggle]
+            */
+
+                /* 'Edit' userflair link */
+
+                    /* Hide parenthesis */ .titlebox .tagline {
+                        margin: 0 -10px;
+                        padding: 0 10px 0px;
+                        font-size: 0px;
+                        color: #F2F7F7;
+                        text-align: left
+                    }
+
+                    /* Link itself */ .side .flairselectbtn.access-required {
+                        color: #151515 !important;
+                        font-size: 10px;
+                        font-weight: 500;
+                        text-transform: capitalize;
+                        display: block;
+                        text-align: right !important;
+                        position: absolute;
+                        right: 79px;
+                        transform: translateX(13px) translateY(-18px)
+                    }
+
+                        .side .flairselectbtn.access-required:hover {
+                            text-decoration: underline !important
+                        }
+
+                /* Username in flair preview */
+
+                    .titlebox .tagline .author {
+                        color: #000002;
+                        font-size: 15px;
+                        text-align: left !important;
+                        display: inline;
+                        padding-left: 20px;
+                    }
+
+                        .titlebox .tagline .author::first-letter {
+                            text-transform: none !important
+                        }
+
+                    .titlebox .author.may-blank {
+                        color: #000002;
+                        font-weight: 600;
+                        letter-spacing: normal;
+                        font-size: 16px;
+                    }
+
+    /*
+        3.6 Sidebar tables
+    */
+
+        .side .md table {
+            width: 300px !important;
+        }
+
+            .side tbody {color: #000002 !important}
+
+                .side tbody a {
+                    color: white !important
+                }
+
+            .side th {
+                color: #151515;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+            .side td {
+                border-top: 1px solid rgba(0,0,1,.2) !important;
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+            }
+
+    /*
+        3.7 Sidebar Discord link
+    */
+
+        .side .md [href*="YOUR.URL"] {
+            background: transparent url(%%discord%%) no-repeat;
+            display: inline-block;
+            width: 260px;
+            height: 50px;
+            background-size: 260px 50px;
+            position: relative;
+            margin-left: 20px
+        }
+
+
+    /*
+        3.8 Flair filters & guidelines [href=]
+    */
+
+            /* Generic rules */
+
+            .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A"] {
+                border-radius: 20px;
+                text-transform: uppercase;
+                text-decoration: none !important;
+                border: none;
+                height: 13px;
+                font-size: 9px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                color: white !important;
+                background: rgba(0,0,0,.7);
+                padding: 0 6px 0 7px;
+                line-height: 13px;
+                position: relative;
+                overflow: visible;
+                float: left;
+                transition: all .2s ease-in-out;
+                white-space: nowrap
+            }
+
+                .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A"]:hover,
+                .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A"]:visited,
+                .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A"]:visited:hover {
+                    color: white !important;
+                    text-decoration: none !important
+                }
+
+                .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A"]:hover {
+                    box-shadow: 0 2px 6px -2px rgba(0,0,0,0.30),
+                                inset 0 0 500px 0 rgba(255,255,255,0.4)
+                }
+
+                .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A"]:active {        
+                    top: 1px;
+                    box-shadow: inset 0 0 500px 0 rgba(0,0,0,0.1)
+                }
+
+            /* Specific rules */
+
+                /* YOUR-FLAIR 1 */ .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A%27___YOUR-FLAIR___%27&sort=new&restrict_sr=on&t=all&feature=legacy_search"]
+                                { background: #DAB01E !important }
+
+                /* YOUR-FLAIR 2 */ .side .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A%27___YOUR-FLAIR___%27&sort=new&restrict_sr=on&t=all&feature=legacy_search"]
+                                { background: #7FD837 !important }
+
+                /* YOUR-FLAIR 3 */ .md [href*="https://www.reddit.com/r/___YOUR-SUB___/search?q=flair%3A%27___YOUR-FLAIR___%27&sort=new&restrict_sr=on&t=all&feature=legacy_search"]
+                                { background: #3BD793 !important }
+
+    /*
+        3.9 Sidebar misc
+    */
+
+        /*
+            3.9.1 Sidebar general styles
+        */
+
+            /* Sidebar Links (Markdown) */
+
+                    .side .md a, .side .md a:visited {
+                        color: #0046AC !important;
+                        text-decoration: none
+                    }
+
+                        .side .md a:hover, .side .md a:visited:hover {
+                            color: #0046AC !important;
+                            text-decoration: underline !important
+                        }
+
+            /* Minor text fixes */
+
+                    .md-container-small .md pre > code, .side .md pre > code, .md-container-small .md th,
+                    .side .md th, .md-container-small .md td, .side .md td, .md-container-small .md li,
+                    .side .md li {
+                        font-size: 1em;
+                        line-height: 117%;
+                    }
+
+                    .side .md li {
+                        padding-bottom: 5px
+                    }
+
+            /* Sidebar code & preformatted text */
+
+                    .md-container-small .md pre, .side .md pre {
+                        background-color: rgba(0,0,0,0.04);
+                        border-radius: 2px;
+                        border: none;
+                        margin-right: 13px
+                    }
+
+                        .md-container-small .md pre > code, .side .md pre > code {
+                            font-family: Menlo, Consolas, monospace;
+                            font-size: 11px;
+                            color: #000002
+                        }
+
+        /*
+            3.9.2 Sidebar titles & separators [.side .usertext blockquote]
+        */
+
+            .side .usertext blockquote, .side .md blockquote {
+                display: inline-block;
+                border-top: 1px solid rgba(0,0,1,.2);
+                width: 290px !important;
+                color: #000002;
+                font-size: 14px;
+                font-weight: 500;
+                border-left: 0px;
+                padding-left: 0px;
+                margin-left: 0px;
+                padding-top: 17px;
+                margin-top: 23px;
+                line-height: 30px !important
+            }
+
+                .side .usertext blockquote a,
+                .side .usertext blockquote a:visited,
+                .side .md blockquote a,
+                .side .md blockquote a:visited {
+                    color: #000002;
+                }
+
+            /* 'To mark spoilers' */
+                .side h6 {
+                    opacity: 0.5;
+                    text-decoration: none;
+                    font-size: 10px
+                }
+
+
+        /*
+            3.9.3 Sidebar collapsible box (Moderation tools) [.sidecontentbox.collapsible] 
+        */
+
+            /* Collapsible header */
+
+                .sidecontentbox.collapsible {
+                    cursor: pointer;
+                    position: relative;
+                    left: 0px;
+                    margin-left: 0;
+                    margin-bottom: -20px !important;
+                    margin-top: -12px;
+                    padding: 0px;
+                    background-color: white;
+                    border: 0;
+                    border-radius: 6px;
+                    box-shadow: 0 1px 2px 0 rgba(0,0,0,0.37);
+                    transition: all .2s ease-in-out;
+                    overflow: hidden;
+                }
+
+                    .sidecontentbox.collapsible:hover {
+                        box-shadow: 0 8px 23px -9px #000000;
+                        transform: translateY(-1px);
+                        z-index: 10000 !important}
+
+                    .sidecontentbox.collapsible:active {
+                        transform: translateY(0px);
+                        box-shadow: 0 3px 5px -2px rgba(0,0,0,1)
+                    }
+
+                    .sidecontentbox.collapsible .title h1 {
+                        cursor: pointer;
+                        border-top: none !important;
+                        padding: 10px 15px 10px 17px !important;
+                        margin-top: 5px !important;
+                        line-height: 0px !important;
+                        color: #0EA34E !important;
+                        font-size: 0px !important;
+                    }
+
+                        .sidecontentbox.collapsible .title h1::selection { background: transparent }
+
+                        /* Green shield icon */
+
+                            .sidecontentbox.collapsible .title h1:before {
+                                display: inline-block;
+                                content: "";
+                                width: 14px;
+                                height: 17px;
+                                background-image: url(%%spritesheet-hector%%) !important;
+                                background-size: 381px 64px;
+                                background-position: -114px -32px;
+                                position: relative;
+                                top: 3px;
+                                color: transparent !important;
+                                margin-right: 6px;
+                                margin-top: -5px;
+                            }
+
+                        .sidecontentbox.collapsible .title h1:after {
+                            content: "Moderation tools";
+                            font-size: 15px;
+                            text-transform: none
+                        }
+
+                    .sidecontentbox .collapse-button {
+                        transform: translateX(-16px) translateY(-18px) !important;
+                        line-height: 0px;
+                        text-align: center;
+                        font-size: 0px;
+                        float: right;
+                        width: 13px;
+                        height: 9px;
+                        display: block;
+                        content: "";
+                        background: url(%%spritesheet-hector%%);
+                        background-size: 381px 64px;
+                        background-position: -84px -29px;
+                        border: none;
+                        border-radius: 20px;
+                        margin: 0;
+                        opacity: .2
+                    }
+
+            /* Expanded view: text */
+
+                .icon-menu {
+                    position: relative;
+                    margin-left: 0px;
+                    padding-left: 0px
+                }
+
+                .icon-menu a {
+                    background-color: transparent;
+                    text-transform: capitalize;
+                    letter-spacing: 0.1px;
+                    font-size: 14px;
+                    font-weight: 300;
+                    color: black;
+                    padding: 0 0 0 0;
+                }
+
+                    .icon-menu a:hover {
+                        text-decoration: none !important;
+                        color: black;
+                    }
+
+                .icon-menu li {
+                    margin-left: 0px;
+                    margin-top: 0px;
+                    margin-bottom: 0px;
+                    padding-left: 16px;
+                    padding-top: 11px;
+                    height: 30px;
+                    width: 299px;
+                    background-color: transparent;
+                    border-radius: 0px;
+                    position: relative;
+                    top: 0px;
+                }
+
+                    .icon-menu li:hover {
+                        text-decoration: none !important;
+                        color: white;
+                        background-color: rgba(0,0,0,0.05);
+                    }
+
+                    .icon-menu li.selected {
+                        background: rgba(0,0,0,.1);
+                        border-radius: 0px;
+                        font-weight: 300;
+                    }
+
+                    .icon-menu li:active {
+                        background: rgba(0,0,0,.1);
+                        box-shadow: inset 0 1px 2px 0 rgba(124,85,0,0.20);
+                        border-radius: 3px;
+                    }
+
+            /* Moderation tools icons */
+
+                .icon-menu .reddit-edit:before, .icon-menu .reddit-traffic:before, .icon-menu .reddit-reported:before, .icon-menu .reddit-spam:before, .icon-menu .reddit-edited:before, .icon-menu .reddit-automod:before, .icon-menu .wikiaction-pages:before, .icon-menu .wikiaction-revisions:before, .icon-menu .reddit-ban:before, .icon-menu .reddit-mute:before, .icon-menu .reddit-flair:before, .icon-menu .reddit-moderationlog:before, .icon-menu .reddit-unmoderated:before, .icon-menu .reddit-moderators:before, .icon-menu .moderator-mail:before, .icon-menu .edit-stylesheet:before, .icon-menu .community-rules:before, .icon-menu .reddit-contributors:before, .icon-menu .reddit-modqueue:before {
+                    background: url(%%spritesheet-mod-tools%%);
+                    background-size: 40px 800px;
+                    height: 40px;
+                    width: 40px;
+                    display: block;
+                    content: "";
+                    position: absolute;
+                    top: 0px;
+                    right: 18px;
+                    transform: translateY(0);
+                    transform: translateX(0);
+                /* Original Reddit stylesheet one:
+                    height: 16px;
+                    width: 16px;
+                    display: block;
+                    content: " ";
+                    float: left;
+                    margin-right:5px */
+                }
+
+            /* Moderation tools separators */
+
+                .icon-menu li:after {
+                    content: "";
+                    display: block;
+                    transform: translateY(12px);
+                    border-bottom: 0.5px solid rgba(0,0,0,.1);
+                    width: 284px !important;
+                }  
+
+                .icon-menu .reddit-unmoderated li:last-of-type, .icon-menu li:after:last-of-type,  .icon-menu li:last-of-type:after, .icon-menu .reddit-unmoderated:after {
+                  border: none !important;
+                  border-bottom: none !important
+                }
+
+            /* Individual Moderation tools icon coordinates */
+
+                             .icon-menu .reddit-edit:before {background-position: 0px 0px} /* Subreddit Settings */
+                         .icon-menu .edit-stylesheet:before {background-position: 0px -40px} /* Edit Stylesheet */
+                         .icon-menu .community-rules:before {background-position: 0px -80px} /* Rules */
+                          .icon-menu .moderator-mail:before {background-position: 0px -120px} /* Moderator Mail */
+                       .icon-menu .reddit-moderators:before {background-position: 0px -160px} /* Moderators */
+                     .icon-menu .reddit-contributors:before {background-position: 0px -200px} /* Approved Users */
+                         .icon-menu .reddit-modqueue:before {background-position: 0px -240px} /* Moderation Queue */
+                          .icon-menu .reddit-traffic:before {background-position: 0px -280px} /* Traffic Stats */
+                         .icon-menu .reddit-reported:before {background-position: 0px -320px} /* Reports */
+                             .icon-menu .reddit-spam:before {background-position: 0px -360px} /* Spam */
+                           .icon-menu .reddit-edited:before {background-position: 0px -400px} /* Edited */
+                              .icon-menu .reddit-ban:before {background-position: 0px -440px} /* Ban Users */
+                             .icon-menu .reddit-mute:before {background-position: 0px -480px} /* Mute Users */
+                            .icon-menu .reddit-flair:before {background-position: 0px -520px} /* Edit Flair */
+                          .icon-menu .reddit-automod:before {background-position: 0px -560px} /* Get Started with Automoderator */
+                    .icon-menu .reddit-moderationlog:before {background-position: 0px -600px} /* Moderation Log */
+                      .icon-menu .reddit-unmoderated:before {background-position: 0px -640px} /* Unmoderated */
+
+                        .icon-menu .wikiaction-pages:before {background-position: -px -px} /* ??? */
+                    .icon-menu .wikiaction-revisions:before {background-position: -px -px} /* ??? */
+         
+
+        /*
+            3.9.4 Other side content boxes (Moderators, Recently viewed links) [.sidecontentbox]
+        */
+
+            .sidecontentbox {
+                margin-right: 13px;
+                margin-bottom: 0px;
+                margin-top: -20px;
+                position: relative;
+                left: 0px;
+            }
+
+                .sidecontentbox .content {
+                    margin: 0;
+                    padding: 5px 0px 0px 0px;
+                    border-top: none;
+                    border-right: none;
+                    border-left: none;
+                    border-bottom: none;
+                    list-style: none
+                }
+
+                .sidecontentbox .title {
+                    text-transform: lowercase;
+                }
+
+                    .sidecontentbox .title h1 {
+                        display: inline-block;
+                        border-top: 1px solid rgba(0,0,1,.2);
+                        width: 300px !important;
+                        color: #000002 !important;
+                        font-size: 14px !important;
+                        font-weight: 500 !important;
+                        text-transform: inherit;
+                        border-left: 0px;
+                        padding-left: 0px;
+                        margin-left: 0px;
+                        padding-top: 10px;
+                        margin-top: 30px;
+                        line-height: 30px !important;
+                        letter-spacing: normal;
+                    }
+
+                        .sidecontentbox .title h1:first-letter { text-transform: uppercase }
+
+        /*
+            3.9.5 'Created by' & Subreddit age [.titlebox .bottom, .titlebox .age]
+        */
+
+            .titlebox .bottom {
+                display: none;
+            }
+
+            .titlebox .age {
+                display: none;
+            }
+
+        /*
+            3.9.6 Create your own Subreddit [.sidebox.create]
+        */
+
+            .create.sidebox {display: none !important}
+
+        /*
+            3.9.7 Moderators list
+        */
+
+            /* 'Message the moderators' */
+
+                .sidecontentbox .helplink {
+                    float: right;
+                    vertical-align: bottom;
+                    position: relative;
+                    top: 63px !important;
+                    left: 0px;
+                    font-weight: normal
+                }
+
+                    .sidecontentbox .helplink::first-letter {
+                        text-transform: uppercase;
+                    }
+
+                    .sidecontentbox .helplink:hover {
+                        text-decoration: underline !important;
+                    }
+
+            /* 'About moderation team' */
+
+                .sidecontentbox .content .more {
+                    font-weight: normal;
+                    font-size: 0px
+                }
+
+                    .sidecontentbox .content .more::first-letter {
+                        text-transform: uppercase;
+                    }
+
+                    .sidecontentbox .content .more a::after {
+                        color: #151515 !important;
+                        content: "About moderation team >";
+                        display: inline-block;
+                        font-weight: normal;
+                        font-size: 10px
+                    }
+
+                        .sidecontentbox .content .more:hover a::after {
+                            text-decoration: underline !important;
+                        }
+
+        /*
+            3.9.8 Recently viewed links [.side .reddit-link]
+        */
+
+            .side .reddit-link {
+                        margin-left: 0;
+                        margin-bottom: 6px;
+                        padding: 8px;
+                        border: 0;
+                        min-height: 10px !important;
+                        height: auto !important;
+                        transition: box-shadow .15s ease-in-out, position .15s ease-in-out;
+                        position: relative
+            }
+
+                .gadget .score, .side .reddit-comment-link {font-size: 20px}
+
+                .side .reddit-link:hover {
+                    box-shadow: 0 9px 16px -8px rgba(0,0,0,1);
+                    z-index: 10000 !important
+                }
+
+                .side .reddit-link:active {
+                    top: 1px;
+                    box-shadow: 0 3px 5px -2px rgba(0,0,0,1)
+                }
+
+                .side .reddit-link-title {
+                    text-transform: none !important;
+                    color: rgba(0,0,0,0.30);
+                    font-weight: 700;
+                    letter-spacing: normal
+                }
+
+                .side .reddit-comment-link, .side .score  {
+                    font-size: smaller;
+                    padding-left: 0 !important;
+                    color: #7f7f7f
+                }
+
+                .side .arrow {
+                    padding-left: 0 !important;
+                    margin-left: 0 !important
+                }
+
+                .side .midcol {
+                    width: 20px !important;
+                    padding-left: 0 !important;
+                    margin-left: 0 !important;
+                    margin-right: 4px !important
+                }
+
+            .side .right { text-transform: capitalize }
+
+                .side .right:hover { text-decoration: underline }
+
+        /*
+            3.9.9 'Account activity' link [.account-activity-box]
+        */
+
+            .account-activity-box::first-letter { text-transform: uppercase }
+
+            .account-activity-box:hover { text-decoration: underline }
+
+            .account-activity-box:after {
+                display: block;
+                height: 25px;
+                width: 20px;
+                content: "";
+                opacity: 0
+            }
+
+        /*
+            3.9.10 ProCSS banner
+        */
+
+            /* Uncomment if you want to use. Thanks for your support! */
+
+            /*
+            .side .md [href="#ProCSS"] {
+                background: transparent url(%%procss%%) no-repeat;
+                display: inline-block;
+                width: 215px;
+                height: 76px;
+                background-size: 215px 76px;
+                margin-left: 43px;
+                margin-top: 5px;
+                position: relative;
+                pointer-events: none;
+            }
+            */
+
+        /*
+            3.9.11 Signature
+        */
+
+            .side .md [href="https://hectorlizard.me/bigpicture"] {
+                background: transparent url(%%signature%%) no-repeat;
+                display: inline-block;
+                width: 301px;
+                height: 24px;
+                background-size: 301px 24px;
+                position: relative;
+                transition: all .2s ease-in-out;
+            }
+
+                .side .md [href="https://hectorlizard.me/bigpicture"]:hover {
+                    background: transparent url(%%signature-h%%) no-repeat;
+                    background-size: 301px 24px;
+                }
+
+                /* Preload hover state */
+
+                    .side .md [href="https://hectorlizard.me/bigpicture"]::after {
+                        display: block;
+                        content: "";
+                        position: absolute;
+                        top:0;
+                        left:0;
+                        width: 0px;
+                        height: 0px;
+                        margin:0;
+                        padding: 0;
+                        opacity: 0;
+                        background: url(%%signature-h%%) !important;
+                    }
+
+        /*
+            3.9.12 Reddit Premium sidebar ad (vertical fix)
+        */
+
+            .premium-banner-outer {
+                transform: translateY(50px);
+                max-width: 290px
+            }
+
+
+/*
+    4. Sticky 'quick links' bar
+*/
+
+    /* Move linklisting to make space */ body.listing-page .content[role="main"] {
+        margin-top: 88px !important
+    }
+
+    body:not(.listing-page) .side .md > ul:first-of-type {
+        display: none
+    }
+
+    .side .md > ul:first-of-type {
+        position: absolute;
+        top: 242px;
+        left: 65px;
+        list-style: none;
+        margin: 0 0 4px 0;
+        width: calc(100% - 504px);
+        font-size: 14px;
+        color: rgba(255,255,255, 0.5) !important;
+        letter-spacing: 0.01px;
+        font-weight: 700;
+        padding: 8px 8px 8px 36px;
+        z-index: 1;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        /* Big Picture additions */
+            background: url(%%blur-small%%) no-repeat center top;
+            background-attachment: fixed;
+            background-size: cover
+    }
+
+        .side .md > ul:first-of-type:hover {
+            z-index: 1
+        }
+
+        .side .md > ul:first-of-type:before {
+            content: "";
+            background-image: url(%%spritesheet-hector%%);
+            background-size: 381px 64px;
+            background-position: 0 -16px;
+            position: absolute;
+            left: 12px;
+            display: block;
+            width: 16px;
+            height: 16px;
+            margin-top: 1px
+        }
+
+        .side .md > ul:first-of-type li {
+            padding: 0;
+            margin: 0
+        }
+
+        .side .md > ul:first-of-type a { margin: 0 15px 0 0 }
+
+        .side .md > ul:first-of-type a,
+        .side .md > ul:first-of-type a:hover,
+        .side .md > ul:first-of-type a:visited,
+        .side .md > ul:first-of-type a:visited:hover {
+            color: black !important
+        }
+
+/*
+    5. Content [.content]
+*/
+
+        /*
+            5.1 Global content styles
+        */
+
+            .content {
+                margin: 22px;
+                margin-left: 0px;
+                margin-right: 395px;
+            }
+
+                body > div.content {
+                    margin-top: 44px !important
+                }
+
+                /* Blurry background panels (main) */
+
+                    .listing-page .sitetable .link, .organic-listing, .stylesheet-customize-container, 
+                    .submit-page .content, .wiki-page .wiki-page-content, .wiki-page .wikititle,
+                    .search-page .search-result-listing, .comments-page .sitetable .link, 
+                    .comment {
+                        background: url(%%blur-small%%) no-repeat center top;
+                        background-attachment: fixed;
+                        background-size: cover;
+                        margin-left: 0px;
+                        margin-bottom: 6px;
+                        padding: 8px;
+                        border: 0;
+                        border-radius: 4px;
+                        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
+                    }
+
+                    .content[role="main"] {
+                        margin-left: 65px
+                    }
+
+                /* Blurry background panels (sidebar) */
+
+                    .side .reddit-link {
+                        background: url(%%blur-small%%) no-repeat center top;
+                        background-attachment: fixed;
+                        background-size: cover;
+                        margin-bottom: 4px;
+                        padding: 8px;
+                        border: 0;
+                        border-radius: 5px;
+                        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20);
+                    }
+
+        /*
+            5.2 Linklisting
+        */
+
+            /*
+                5.2.2 Stickied post ('Announcement') [.stickied.link]
+            */
+
+                /* Green megaphone icon */ .stickied.link .rank:before {
+                    content: "";
+                    display: block;
+                    position: relative;
+                    top: -3px;
+                    width: 17px;
+                    height: 17px;
+                    margin-left: 0px;
+                    background-image: url(%%spritesheet-hector%%);
+                    background-size: 381px 64px;
+                    background-position: -261px 0;
+                }
+
+                .stickied-tagline {
+                    color: #007C36 !important;
+                    font-size: 11px;
+                    font-weight: 500
+                }
+
+                    .stickied-tagline:first-letter {
+                        text-transform: uppercase !important;
+                    }
+
+                    .stickied-tagline::before {
+                        display: inline-block;
+                        content: "";
+                        width: 4px;
+                        height: 4px;
+                        background-image: url(%%spritesheet-hector%%) !important;
+                        background-size: 381px 64px;
+                        background-position: -99px -21px;
+                        position: relative;
+                        color: transparent !important;
+                        top: 0px;
+                        margin-right: 6px;
+                        margin-left: 4px !important
+                    }
+
+
+                    .link .userattrs .moderator {
+                        display: inline-block;
+                        content: "";
+                        width: 11px;
+                        height: 12px;
+                        background-image: url(%%spritesheet-hector%%) !important;
+                        background-size: 381px 64px;
+                        background-position: -103px -16px;
+                        position: relative;
+                        color: transparent !important;
+                        margin-left: 1px;
+                        margin-bottom: -10px;
+                        margin-top: 0px;
+                        top: -10px;
+                        color: #007C36 !important;
+                    } 
+
+                        .link .moderator {color: #007C36 !important}
+
+            /*
+                5.2.3 Approval checkmark (green tick)
+            */
+
+                .approval-checkmark {
+                    background-image: url(%%spritesheet-hector%%);
+                    background-size: 381px 64px;
+                    background-position: -368px 0;
+                    width: 0;
+                    height: 13px;
+                    float: right;
+                    position: relative;
+                    top: 3px;
+                    margin-right: 1px;
+                    overflow: hidden;
+                    padding-left: 13px;
+                }
+
+            /*
+                5.2.4 Expandable content preview
+            */
+
+                /*
+                    5.2.4.1 Expand icon (eye +/-) [.expando-button]
+                */
+
+                    .expando-button {
+                        float: left !important;
+                        width: 20px !important;
+                        height: 22px !important;
+                        margin: 5px 6px 2px 0 !important;
+                        background: transparent url(%%spritesheet-hector%%) !important;
+                        background-size: 381px 64px !important;
+                        opacity: .5
+                    }
+
+                        .expando-button.selftext.collapsed,
+                        .expando-button.video.collapsed {
+                            background-position: -183px 0 !important;
+                        }
+
+                            .expando-button.selftext.collapsed:hover, .eb-sch,
+                            .expando-button.video.collapsed:hover, .eb-vch {
+                                opacity: 1
+                            }
+
+                        .expando-button.selftext.expanded, .eb-se,
+                        .expando-button.video.expanded, .eb-ve {
+                            background-position: -163px 0 !important;
+                        }
+
+                            .expando-button.selftext.expanded:hover, .eb-seh,
+                            .expando-button.video.expanded:hover, .eb-veh {
+                                opacity: 1
+                            }
+
+                        .expando .psuedo-selftext {
+                            border-radius: 7px;
+                            border: 1px solid #369;
+                            overflow: hidden;
+                            max-width: 710px;
+                        }
+
+                /*
+                    5.2.4.2 Images & videos
+                */
+
+                    .media-preview-content{padding-right: 7px}
+
+                /*
+                    5.2.4.3 'Click to see spoiler' button
+                */
+
+                    button.expando-gate__show-once {
+                        border-color: black !important;
+                        color: black !important;
+                        margin: 0;
+                    }
+
+                        button.expando-gate__show-once:hover {
+                            color: #545452 !important;
+                            box-shadow: 0 5px 11px -4px rgba(0,0,0,0.5)
+                        }
+
+                        button.expando-gate__show-once:active {
+                            background-color: #e6e6e6 !important;
+                            border-color: #e6e6e6 !important;
+                            box-shadow: 0 2px 4px -2px rgba(0,0,0,0.9)
+                        }
+
+    /*
+        5.2.1  Sitetable Links [.sitetable .link]
+    */
+
+        .sitetable .link {
+            transition: all 0.2s ease;
+            overflow: visible
+        }
+
+            .listing-page .sitetable .link { overflow: visible }
+
+                        .listing-page .sitetable .link:hover {
+                            box-shadow: 0 10px 16px -8px rgba(0,0,0,0.5),
+                                        inset 0 0 0 500px rgba(255,255,255,0.2);
+                            z-index: 10000 !important;
+                            overflow: visible;
+                        }
+
+                        .listing-page .sitetable .link:active {
+                            position: relative;
+                            top: 1px !important;
+                            box-shadow: 0 3px 5px -2px rgba(0,0,0,1)
+                        }
+
+            .comments-page .sitetable .link { margin: 0 }
+
+            .link.last-clicked { background-color: #f5f5f5 }
+
+        /*
+            5.2.1.1  Rank / Voting [.link .rank, .midcol]
+        */
+
+            .link .rank {
+                display: none;
+                bottom: 0px
+            }
+
+                .stickied.link .rank {
+                    display: block !important;
+                    float: right;
+                    margin-top: 0px;
+                    padding: 4px;
+                    min-width: 14px;
+                    font-size: small;
+                    text-align: center;
+                    color: rgba(0,0,0,0.30);
+                }
+
+                .organic-listing .link .rank:before { content: "AD"; }
+
+        /*
+            5.2.1.2  Voting [.midcol]
+        */
+
+            .midcol {
+                margin: 0 5px 0 0;
+                padding: 0 0;
+                min-width: 36px;
+                height: auto;
+                overflow: visible;
+                border: none
+            }
+
+                .link .score {
+                    margin: 0 0 2px 0;
+                    font-size: 9px;
+                    font-weight: normal;
+                    color: rgba(0,0,0,0.30);
+                    letter-spacing: 0.67px;
+                    text-align: center;
+                    position: relative;
+                    top: 4px;
+                    left: -1px
+                }
+
+                    .link .score.likes { color: orangered }
+
+                    .link .score.dislikes { color: #9587FF }
+
+            .arrow {
+                margin: 0 3px;
+                background-image: url(%%spritesheet-hector%%) !important;
+                background-size: 381px 64px;
+                height: 17px;
+                width: 15px;
+                border-radius: 2px;
+                position: relative;
+                left: 5px;
+                top: 3px
+            }
+
+                .arrow:hover { opacity: 0.2 !important }
+
+                .arrow.up { background-position: -353px 0; opacity: 0.10 }
+
+                .arrow.upmod { background-position: -17px 1px }
+
+                    .arrow.upmod:hover { opacity: 1 !important }
+
+                .arrow.down { background-position: -147px -1px; opacity: 0.10; top: 6px !important }
+
+                .arrow.downmod { background-position: -1px -1px; top: 6px !important }
+
+                    .arrow.downmod:hover { opacity: 1 !important }
+
+        /*
+            5.2.1.3  Thumbnail [.thumbnail]
+        */
+
+            .thumbnail {
+                height: 54px !important;
+                width: 54px;
+                margin: 0 10px 0 0;
+                border-radius: 4px;
+                -webkit-transform: translate3d(0, 0, 0);
+                background-color: transparent;
+                visibility: visible !important;
+                z-index: 1 !important;
+                -webkit-flex: none;
+                flex: none;
+                display: block !important;
+            }
+
+                .thumbnail:before {
+                    display: block;
+                    content: "";
+                    padding: 12px;
+                    position: absolute;
+                    width: 30px;
+                    height: 30px;
+                    background-color: rgba(0,0,0,0.1);
+                    background-size: 31px 31px;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    z-index: 2;
+                    border-radius: 4px
+                }
+
+                a.thumbnail img {
+                    position: relative;
+                    left: 50%;
+                    height: 54px;
+                    width: auto;
+                    border-radius: 4px;
+                    transform: translateX(-50%)
+                }
+
+                /* Custom thumbnails */
+
+                    .thumbnail,
+                    a.thumbnail,
+                    .thumbnail.self,
+                    .stickied .thumbnail.self,
+                    .stickied .thumbnail.default,
+                    a.thumbnail.nsfw,
+                    a.thumbnail.spoiler,
+                    a.thumbnail.default,
+                    a.thumbnail[href*="reddit.com"],
+                    a.thumbnail[href*="redd.it"],
+                    a.thumbnail[href*="twitter.com"],
+                    a.thumbnail[href*="mobile.twitter.com"] {
+                        background-image: url(%%thumbnails%%) !important;
+                        background-size: 434px 54px !important;
+                        width: 54px;
+                        height: 54px;
+                        background-color: transparent;
+                        visibility: visible !important;
+                        z-index: 1 !important;
+                    }
+
+                        /* Default link post with no image */
+
+                            .thumbnail.default {
+                                background-position: 0 0;
+                                z-index: 1 !important;
+                                background-color: transparent;
+                            }
+
+
+                        /* Self-posts & announcements */
+
+
+                            .thumbnail.self,
+                            .thumbnail .invisible-when-pinned .self,
+                            .thumbnail .invisible-when-pinned .self .may-blank .loggedin,
+                            a.thumbnail.self,
+                            a.thumbnail .invisible-when-pinned .self,
+                            a.thumbnail .invisible-when-pinned .self .may-blank .loggedin,
+                            a.thumbnail[href*="reddit.com/r/MssCss"]  {
+                                background-image: url(%%thumbnails%%) !important;
+                                z-index: 1 !important;
+                                visibility: visible !important;
+                                background-size: 434px 54px !important;
+                                background-position: -324px 0 !important
+                            }
+
+                                .thumbnail.self:before {
+                                    background-color: transparent !important
+                                }
+
+                            /* Announcements (stickied) global */
+
+                                .stickied .thumbnail {
+                                    background-color: #007C36 !important;
+                                    z-index: 1 !important;
+                                }
+
+                                    .stickied .thumbnail:before { background-color: rgba(0, 0, 0, 0) }
+
+                                    /* Stickied self-post */
+
+                                        .stickied .thumbnail.self { background-position: -54px 0 !important }
+                                        .stickied .thumbnail.self:before { background-color: rgba(0, 0, 0, 0) }
+
+                                    /* Stickied link */
+
+                                        .stickied .thumbnail.default { background-position: -378px 0 !important }
+                                        .stickied .thumbnail.default:before { background-color: rgba(0, 0, 0, 0) }
+
+                        /* Sensitive content */
+
+                            a.thumbnail.nsfw {
+                                background-image: url(%%thumbnails%%) !important;
+                                background-position: -162px 0 !important;
+                                background-color: #FF5559
+                            }
+
+                                .thumbnail.nsfw:before { background-color: transparent }
+
+                            a.thumbnail.spoiler {
+                                background-image: url(%%thumbnails%%) !important;
+                                background-position: -108px 0 !important;
+                                background-color: #545452
+                            }
+
+                                .thumbnail.spoiler:before { background-color: transparent }
+
+
+                        /* Sites */
+
+                            a.thumbnail[href*="reddit.com"],
+                            a.thumbnail[href*="redd.it"] {
+                                background-position: -216px 0px !important;
+                                z-index: 1 !important;
+                            }
+
+                               /* a.thumbnail[href*="reddit.com"] img,
+                                a.thumbnail[href*="redd.it"] img {
+                                    display: none
+                                } */
+
+                                .thumbnail[href*="reddit.com"]:before,
+                                .thumbnail[href*="redd.it"]:before {
+                                    background-color: rgba(0, 0, 0, 0)
+                                }
+
+                                .thumbnail[href*="i.reddit.com"] img,
+                                .thumbnail[href*="i.redd.it"] img {
+                                    display: block !important
+                                }
+
+
+
+                            a.thumbnail[href*="twitter.com"],
+                            a.thumbnail[href*="mobile.twitter.com"] {
+                                background-position: -270px 0 !important
+                            }
+
+                                a.thumbnail[href*="twitter.com"] img,
+                                a.thumbnail[href*="mobile.twitter.com"] img {
+                                    display: none !important
+                                }
+
+                                .thumbnail[href*="twitter.com"]:before,
+                                .thumbnail[href*="mobile.twitter.com"]:before {
+                                    background-color: rgba(0,0,0,0)
+                                }
+
+        /*
+            5.2.1.4 Stamps (NSFW/Spoilers)
+        */
+
+            .stamp {
+                border: none;
+                display: inline;
+                font-size: 11px;
+                font-weight: 700;
+                line-height: normal;
+                padding: 0 0px;
+                position: relative;
+                top: 1px
+            }
+
+            .nsfw-stamp { color: #FF5559 }
+
+                .nsfw-stamp:after { content: "!" }
+
+            .spoiler-stamp { color: #545452 }
+
+                .spoiler-stamp:after { content: "!" }
+
+        /*
+            5.2.1.5  Title [.title]
+        */
+
+            .link .title {
+                font-size: 14px;
+                color: black;
+                font-weight: 700 !important;
+                letter-spacing: .02em !important
+            }
+
+                .link .title a:hover { text-decoration: underline !important }
+
+                .link .title a:visited { color: black }
+
+                .thing.stickied.link a.title { color: #007C36; font-weight: 700 }
+
+            .link .domain {
+                margin: 3px 0;
+                font-size: 9px;
+                letter-spacing: 0.4px;
+                text-transform: uppercase;
+                font-weight: normal
+            }
+
+                .link .domain a {
+                    visibility: visible;
+                    color: rgba(0,0,0,.6) !important; 
+                    vertical-align: middle
+                }
+
+                .link .domain a:hover {
+                    text-decoration: none !important;
+                    color: rgba(0,0,0,.7) !important
+                }
+
+            .link .tagline {
+                margin: 3px 0 0 0;
+                color: rgba(0,0,0,.6);
+                font-size: 0px
+            }
+
+            .link time {
+                font-size: 11px !important;
+                font-weight: 400 !important
+            }
+
+                .link time:after { content: " by " }
+
+            .link .author {
+                color: rgba(0,0,0,.7);
+                font-size: 11px !important
+            }
+
+                .link .author:hover { color: black }
+
+            .link .author.moderator a { color: #007C36 }
+
+                .link .author.moderator a:hover { color: #96FFC4 !important }
+
+            .entry .buttons {
+                margin-top: 0;
+                padding-top: 0
+            }
+
+            /* Link action buttons */
+
+                .entry .buttons li a {
+                    color: rgba(0,0,0,.7);
+                    font-size: 11px;
+                    font-weight: 400;
+                    position: relative;
+                    top: 1px;
+                    text-transform: capitalize;
+                    letter-spacing: normal;
+                    padding: 0;
+                    transition: all 0.15s ease
+                }
+
+                    .entry .buttons li a:hover { color: black }
+
+
+        .link .usertext-body .md {
+            padding: 8px 0;
+            margin: 8px 8px 0 0;
+            border-radius: 0;
+            border: 0;
+            border-top: none;
+            background: transparent
+        }
+
+            .stickied.link .usertext-body .md { border: none }
+
+    /*
+        5.3 Report management [.pretty-button]
+    */
+
+        /* Reports number (yellow) */ .entry .buttons li.reported-stamp {
+            height: 8px;
+            padding-top: 0px;
+            padding-bottom: 4px;
+            transform: translateY(-1px);
+            line-height: 11px;
+            background-color: #fff;
+            font-size: 11px;
+            font-weight: normal;
+            color: #876e00 !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-width: 1px;
+            border-color: #876e00 !important;
+            border-radius: 2px !important;
+            margin-left: 7px
+        }
+
+        .suspicious { background-color: #f6e69f }
+
+        .pretty-button {
+            height: 8px;
+            padding: 0 10px 4px 10px;
+            transform: translateY(-1px);
+            line-height: 11px;
+            background-color: #29cce0;
+            font-size: 11px;
+            font-weight: normal;
+            color: #fff !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-width: 1px;
+            border-color: #29cce0;
+            border-radius: 20px;
+            opacity: 0.7 !important
+        }
+
+            a.pretty-button:hover { text-decoration: none !important }
+
+        /* Moderation choice made */
+
+            .pretty-button.pressed { opacity: 1 !important }
+
+        /* Global hover opacity rule */
+
+            .pretty-button.neutral:hover,
+            .pretty-button.positive:hover,
+            .pretty-button.negative:hover { opacity: 0.5 !important }
+
+        /* Red */
+
+            .pretty-button.negative {
+                background-image: none;
+                transform: translateY(-1px);
+                line-height: 11px;
+                background-color: #9d0b11 !important;
+                font-size: 11px;
+                font-weight: normal;
+                color: #fff !important;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-width: 1px;
+                border-color: #9d0b11
+            }
+
+                .pretty-button.negative.pressed {
+                    background-image: none;
+                    border-width: 2px;
+                    border-color: #9d0b11;
+                    background-color: #fff !important;
+                    color: #9d0b11 !important
+                }
+
+        /* Grey */
+
+            .pretty-button.neutral {
+                background-image: none;
+                transform: translateY(-1px);
+                line-height: 11px;
+                background-color: #545454 !important;
+                font-size: 11px;
+                font-weight: normal;
+                color: #fff !important;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-width: 1px;
+                border-color: #545454
+            }
+
+                .pretty-button.neutral.pressed {
+                    background-image: none;
+                    border-width: 2px;
+                    border-color: #545454;
+                    background-color: #fff !important;
+                    color: #545454 !important
+                }
+
+        /* Green */
+
+            .pretty-button.positive {
+                background-image: none;
+                transform: translateY(-1px);
+                line-height: 11px;
+                background-color: #349d0b !important;
+                font-size: 11px;
+                font-weight: normal;
+                color: #fff !important;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                border-width: 1px;
+                border-color: #349d0b
+            }
+
+                .pretty-button.positive.pressed {
+                    background-image: none;
+                    border-width: 2px;
+                    border-color: #349d0b;
+                    background-color: #fff !important;
+                    color: #349d0b !important
+                }
+
+        /* Spam */
+
+            .thing.spam {
+                background-color: #E8D9CC;
+                border-radius: 3px;
+                margin-top: 4px;
+                padding-top: 10px !important;
+                margin-bottom: 6px;
+                border-top: none !important
+            }
+                .thing.spam:before { display: none }
+
+                .tagline.spam a { color: #a61602 !important }
+
+            body.user-spam #header { background-color: #ff8b60 }
+
+            .author.user-spam { color: #ff8b60; font-weight: bold }
+
+/*
+    6. Thread page
+*/
+
+    /*
+        6.1 'All x comments' [.panestack-title]
+    */
+        
+        .panestack-title {
+            border-bottom: none;
+            transform: translateY(21px)
+        }
+
+            .panestack-title .title {
+                font-size: 11px !important;
+                font-weight: normal !important;
+                color: #1F1F1F !important;
+                text-transform: uppercase;
+                letter-spacing: 1.12px
+            }
+
+    /*
+        6.2 'Sorted by' & OP/mod actions [.menuarea]
+    */
+
+        .menuarea {
+            padding: 0px 10px;
+            margin-left: 150px !important;
+            border-bottom: none;
+            text-align: right;
+            width: 100%;
+            overflow: visible;
+            display: block;
+            position: relative;
+            right: 16px !important;
+            -webkit-transform: translate3d(0, 0, 0);
+            z-index: 100 !important
+        }
+
+        /* 'Sorted by' dropdown
+
+            /* 'Sorted by' Label */
+
+                .dropdown-title.lightdrop {
+                    font-size: 11px !important;
+                    font-weight: normal !important;
+                    color: #1F1F1F !important;
+                    text-transform: uppercase;
+                    text-decoration: none;
+                    letter-spacing: 1.12px;
+                    z-index: 100 !important
+                }
+
+            /* Button (default = 'Best') */
+
+                .dropdown.lightdrop .selected {
+                    width: 138px;
+                    font-size: 11px;
+                    font-weight: 600;
+                    line-height: 23px;
+                    letter-spacing: 1.12px;
+                    text-transform: uppercase;
+                    color: #000001 !important;
+                    background: transparent;
+                    text-decoration: none;
+                    border: 1px solid #000001;
+                    border-radius: 20px;
+                    box-shadow: 0 0px 0px 0px rgba(29,82,80,0.4);
+                    transition: all 0.2s ease;
+                    padding: 5px 12px 5px 20px;
+                    text-align: center;
+                    z-index: 100 !important
+                }
+
+                    .dropdown.lightdrop .selected:hover {
+                        background: #fff;
+                        border: 1px solid #fff;
+                        color: black !important;
+                        box-shadow: 0 5px 11px -4px rgba(0,0,1,1);
+                        z-index: 100 !important
+                    }
+
+                    .dropdown.lightdrop .selected:active {
+                        background: #DFDFDF;
+                        border: 1px solid #DFDFDF;
+                        color: white !important;
+                        box-shadow: 0 2px 4px -2px rgba(0,0,2,1);
+                        z-index: 100 !important
+                    }
+
+                    /* Arrow icon */ .dropdown.lightdrop .selected:after {
+                        display: inline-block;
+                        content: "";
+                        background: url(%%spritesheet-hector%%);
+                        background-size: 381px 64px;
+                        background-position: -133px -16px;
+                        width: 9px;
+                        height: 6px;
+                        margin-right: 5px;
+                        margin-left: 3px;
+                        z-index: 100 !important
+                    }
+
+            /* Dropdown menu itself) */ .drop-choices.lightdrop {
+                transform: translateY(2.2px) translateX(-19px);
+                font-size: 14px;
+                text-align: left !important;
+                text-transform: capitalize;
+                letter-spacing: normal;
+                border-radius: 4px;
+                border: none;
+                background-color: #F3F4F4;
+                white-space: nowrap;
+                line-height: normal;
+                margin-top: 1px;
+                box-shadow: 0px 4px 13px 0px rgba(0, 0, 0, 0.35), 0px 0px 0px 1px rgba(0, 0, 0, 0.15);
+                padding: 4px 0px 4px 0px;
+                z-index: 100 !important;
+                color: black !important
+            }
+
+                .drop-choices.lightdrop a:hover {
+                    color: white !important
+                }
+
+        /* Mod actions (Make announcement etc.) */
+
+            .menuarea .togglebutton {
+                display: inline !important;
+                font-size: 11px !important;
+                color: #005E29 !important;
+                font-weight: 500 !important;
+                text-transform: capitalize;
+                text-align: right;
+                text-shadow: 0 0 25px #FFFFFF;
+            }
+
+                .menuarea .togglebutton:hover {
+                    color: #003A19 !important;
+                    text-decoration: underline !important;
+                    text-shadow: 0 0 25px rgba(255,255,255,.35);
+                }
+
+    /*
+        6.3 Main comment field area [.usertext-edit]
+    */
+
+        /*
+            6.3.1 Field itself [.usertext-edit, textarea]
+        */
+
+            .usertext-edit {
+                margin-top: 10px;
+                padding: 0 1px;
+                width: 500px
+            }
+
+                .usertext-edit textarea {
+                    width: 478px;
+                    height: 100px;
+                }
+
+                textarea, input {
+                    background: url(%%blur-small%%) no-repeat center top;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.38),
+                                inset 0 1px 4px 999px rgba(255,255,255,.1) !important;
+                    border: none !important;
+                    border-radius: 3px;
+                    padding: 10px;
+                    color: black;
+                    border-bottom: none !important;
+                    min-height: 25px
+                }
+
+                    ::-webkit-resizer {
+                        width: 11px;
+                        height: 11px;
+                        background-image: url(%%spritesheet-hector%%) !important;
+                        background-size: 381px 64px;
+                        background-position: -142px -16px;
+                    }
+
+                    textarea:focus, input:focus {
+                        box-shadow: 0 0 0 2px #0046AC;
+                        outline-width: 0;
+                        outline: none;
+                    }
+
+                    textarea.usertext {
+                        border-bottom: none !important;
+                        box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.38) !important
+                    }
+
+        /*
+            6.3.2 'Save' button, 'Content policy' & 'Formatting help' [.bottom-area]
+        */
+
+            .bottom-area {margin-right: 0px}
+
+                .help-toggle .option, .reddiquette {color: black !important; font-size: 10px !important}
+
+                    .help-toggle:first-letter, .reddiquette:first-letter {text-transform: uppercase}
+
+                    .help-toggle .option:hover, .reddiquette:hover {text-decoration: underline !important}
+
+        /*
+            6.3.3 Formatting help [.usertext .markhelp]
+        */
+
+            .usertext .markhelp {
+                border-top: none;
+                background: url(%%blur-small%%) no-repeat center top;
+                background-attachment: fixed;
+                background-size: cover;
+                box-shadow: inset 0 1px 2px 0 rgba(0,0,0,0.38);
+                border-radius: 5px;
+                padding: 15px 20px 10px 20px
+            }
+
+                .markhelp p { color: #151515 }
+
+                    .markhelp p:first-letter { text-transform: uppercase }
+
+                .markhelp a { color: #0046AC !important }
+
+                    .markhelp a:hover { text-decoration: underline !important }
+
+                /* Example table */
+
+                    .usertext .markhelp table {
+                        width: 100%;
+                        margin: 5px 0px
+                    }
+
+                        .usertext .markhelp tr, .usertext .markhelp td {
+                            width: 50%;
+                            border: none;
+                            background-color: transparent !important
+                        }
+
+                        .markhelp tbody { margin: 0 0 !important }
+
+                /* Spaces for '...treated like code' */ .usertext .markhelp .spaces { background-color: rgba(0,0,1,.2) }
+
+                /* Code example */ .markhelp tbody pre {
+                    background-color: rgba(255,255,255,0.04);
+                    border-radius: 2px;
+                    border: none;
+                    font-family: Menlo, Consolas, monospace;
+                    font-size: 11px;
+                    color: #000002
+                }
+
+        /*
+            6.3.4 'Highlight comments posted since previous visit' [.gold-accent, .new-comment]
+        */
+
+            .gold-accent {
+                margin-top: 0;
+                padding: 0 0 0;
+                background-color: transparent;
+                border: none;
+            }
+
+                .gold-accent .title {
+                    font-size: 11px !important;
+                    font-weight: normal !important;
+                    color: #1F1F1F !important;
+                    text-transform: uppercase;
+                    letter-spacing: 1.12px;
+                }
+
+                    .gold-accent .title:before {
+                        display: inline-block;
+                        content: "";
+                        width: 19px;
+                        height: 15px;
+                        background-image: url(%%spritesheet-hector%%) !important;
+                        background-size: 381px 64px;
+                        background-position: -113px -16px;
+                        margin-right: 5px;
+                        position: relative;
+                        top: 2px;
+                    }
+
+                .rounded.gold-accent.comment-visits-box {
+                    width: 100%;
+                    background: transparent;
+                    max-width: none;
+                    margin: 0px 5px 15px;
+                    padding: 7px 10px 7px 7px;
+                    color: inherit;
+                }
+
+            .new-comment .usertext-body {
+                background: rgba(241,234,158,0.27);
+                border-radius: 3px;
+                border: none;
+                margin-top: 1px
+            }
+
+    /*
+        6.4 Comments [.commentarea, .comment]
+    */
+
+        /*
+            6.4.1 Comment area general styles
+        */
+
+            .comment .entry .buttons {
+                margin-top: 0;
+                padding-top: 0;
+            }
+
+                .comment .entry .buttons li a { color: rgba(0,0,0,0.30) }
+
+                    .comment .entry .buttons li a:hover { color: black }
+
+            .comment.noncollapsed .child {
+                border: none !important;
+                box-shadow: none;
+                border-radius: 3px !important
+            }
+
+            .commentarea .child .thing {
+                box-shadow: inset 0 0 0 1px rgba(255,255,255,0.09) !important;
+                margin-top: 15px;
+                margin-right: 6px;
+            }
+
+            .comment .child, .comment .showreplies {
+                margin-top: 0;
+                margin-left: 20px
+            }
+
+            .comment .tagline .score:before {
+                display: inline-block;
+                content: "";
+                width: 4px;
+                height: 4px;
+                background-image: url(%%spritesheet-hector%%) !important;
+                background-size: 381px 64px;
+                background-position: -99px -21px;
+                position: relative;
+                color: transparent !important;
+                top: -1px;
+                margin-right: 6px;
+                margin-left: 5px
+            }
+
+
+
+        /*
+            6.4.2 Username [.author]
+        */
+
+            .comment .author {
+                color: rgba(0,0,0,.7) !important;
+                font-size: 11px !important;
+                font-weight: 500 !important
+            }
+
+            .comment .expand { color: rgba(0,0,0,.7) }
+
+                .author.submitter {
+                    color: rgba(0,0,0,.7) !important;
+                    display: inline;
+                    width: auto;
+                    height: auto;
+                    background-image: none !important;
+                    position: static
+                }
+
+            /*
+                6.4.2.1 User attributes [.userattrs]
+            */
+
+                .commentarea .userattrs {
+                    color: transparent;
+                    margin-left: -6px;
+                    margin-right: -1px
+                }
+
+                    /* OP (.submitter) */
+
+                    .userattrs .submitter {
+                        display: inline-block;
+                        content: "";
+                        width: 12px;
+                        height: 12px;
+                        background-image: url(%%spritesheet-hector%%) !important;
+                        background-size: 381px 64px;
+                        background-position: -84px -16px;
+                        position: relative;
+                        color: transparent !important;
+                        margin-right: -2px;
+                        z-index: 5;
+                    }
+
+                    /* Distinguished comment (.moderator) */
+
+                        .commentarea .userattrs .moderator {
+                            display: inline-block;
+                            content: "";
+                            width: 11px;
+                            height: 12px;
+                            background-image: url(%%spritesheet-hector%%) !important;
+                            background-size: 381px 64px;
+                            background-position: -103px -16px;
+                            position: relative;
+                            color: transparent !important;
+                            margin-left: 3px;
+                            margin-right: -3px;
+                            top: 0px
+                        } 
+
+                        .author.moderator {color: #007C36 !important}
+
+                    /* Friend (.friend) */
+
+                        .userattrs .friend {
+                            display: inline-block;
+                            content: "";
+                            width: 12px;
+                            height: 12px;
+                            background-image: url(%%spritesheet-hector%%) !important;
+                            background-size: 381px 64px;
+                            background-position: -71px -16px;
+                            position: relative;
+                            color: transparent !important;
+                            top: 0px
+                        }
+
+                            .link .userattrs .friend {
+                                top: -10px;
+                                margin-right: 3px;
+                                margin-bottom: -10px !important;
+                                padding-bottom: 0px !important
+                            }
+
+    /*
+        6.5 Edit text post []
+    */
+
+        .link textarea {
+            margin-left: -10px;
+            width: 98% !important
+        }
+    
+
+/*
+    7. Footer [.footer]
+*/
+
+    .footer-parent {
+        height: 328px;
+        background-image: none;
+        background-position: right;
+        background-repeat: no-repeat;
+        font-weight: 500;
+        font-size: 11px;
+        text-transform: uppercase;
+        text-align: left;
+        padding-left: 0px;
+        letter-spacing: 1px;
+        line-height: 20px;
+        padding-top: 0px;
+        padding-bottom: 0px
+    }
+
+        .debuginfo, .footer-parent { background-color: transparent }
+
+    .footer {
+        padding: 0px;
+        padding-top: 30px;
+        margin: 30px;
+        border: none;
+        display: flex;
+        display: -webkit-flex;
+        max-width: 600px
+    }
+
+        .footer .col {
+            margin: 10px 0 30px;
+            min-width: 180px
+        }
+
+        .footer .flat-vert .title {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: normal;
+            transition: color .25s ease, background-color .25s ease;
+            color: rgba(0,0,0,.35);
+        }
+
+        .footer .flat-vert li a {
+            font-size: 11px;
+            font-weight: 400;
+            color: rgba(0,0,0,.35)
+        }
+
+            .footer .flat-vert li a:hover {
+                text-decoration: underline !important;
+            }
+
+    .rounded #footer {margin: 10px 0 30px;}
+
+    .bottommenu, .col {border: none !important}
+
+    .bottommenu {
+        margin-left: 45px;
+        font-size: 11px;
+        color: rgba(0,0,0,.35) !important;
+        opacity: 1;
+        font-weight: normal;
+        text-transform: none;
+        letter-spacing: normal;
+        line-height: 14px;
+    }
+
+        .bottommenu a {
+            text-decoration: underline !important;
+            color: rgba(0,0,0,.35) !important;
+        }
+
+    .buygold {
+        color: #A05F08 !important;
+        font-weight: 600
+    }
+
+    #hsts_pixel { display:none }
+
+    .debuginfo { display: none }
+
+
+/*
+    8. Subreddit settings page
+*/
+
+    .linefield {
+        background: url(%%blur-small%%) no-repeat center top;
+        background-attachment: fixed;
+        background-size: cover;
+        border: none !important;
+        border-radius: 3px;
+        box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20)
+    }
+
+        .linefield .title {
+            color: #B0B0B0;
+            font-size: 12px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-weight: normal;
+        }
+
+        .linefield-description {
+            color: black !important;
+            font-size: 11px !important;
+            margin-top: 5px !important
+        }
+
+            .linefield-description::first-letter {
+                text-transform: uppercase !important
+            }
+
+    .pretty-form input[type=text] {
+        box-shadow: none;
+            -webkit-box-shadow: none;
+        border: none;
+        border-bottom: 1px solid rgba(255,255,255,.5);
+        padding: 0px;
+        background-color: transparent;
+        color: black;
+        outline: none !important;
+        margin-top: 3px;
+        margin-bottom: 8px
+    }
+
+    .gray { color: rgba(255,255,255,.6) }
+
+
+/*
+    9. Submit page
+*/
+
+    /* 'Submit to' */
+
+        .content h1 {
+            text-transform: capitalize;
+        }   
+
+    /* Link/text tab menu */
+
+        ul.tabmenu.formtab {
+            display: block;
+            width: 520px;
+            height: 37px;
+            background: rgba(255,255,255,0.10);
+            border-radius: 8px;
+            padding: 0px;
+            margin: 0px;
+            text-transform: capitalize !important;
+            top: -8px;
+        }
+
+        .tabmenu.formtab li {
+            margin: 3px;
+            padding-top: 3px;
+            padding-bottom: 6px;
+            height: 20px !important;
+            border-radius: 6px;
+            background-color: transparent;
+            text-transform: capitalize !important;
+            top: -4px;
+        }
+
+        .content .tabmenu.formtab .text-button, .content .tabmenu.formtab .link-button {
+            text-transform: uppercase !important;
+            font-size: 13px !important;
+        }
+
+        .tabmenu.formtab a {
+            padding: 0 112px 0 113px;
+            border: none;
+            border-radius: 6px;
+            color: black !important;
+            font-size: 13px !important;
+            background-color: transparent;
+            text-transform: capitalize !important;
+            position: relative;
+            top: 13px !important;
+            height: 20px
+        }
+
+
+        .tabmenu.formtab .selected a {
+            padding: 10px 110px 5px 110px;
+            border: none;
+            border-radius: 6px;
+            background: rgba(255,255,255,0.29);
+            box-shadow: 0 4px 6px 0 rgba(0,0,0,0.16);
+            top: 4px;
+        }
+
+    /* Content of tabs */
+
+        .formtabs-content {
+            border-top: none;
+            padding-top: 10px;
+            width: 500px;
+            margin-right: none
+        }
+
+        /* 'You are submitting a link' */
+
+            .formtabs-content .infobar {
+                margin: 0;
+                padding: 15px;
+                background-color: transparent;
+                border: none;
+                font-size: 12px;
+                margin: 5px 5px 5px 0px
+            }
+
+            .roundfield {
+                width: 500px;
+                background: rgba(255,255,255,0.10);
+                border-radius: 6px;
+                padding: 5px 10px 10px 10px;
+                font-size:11px;
+                text-transform: uppercase;
+                font-weight: 300;
+                color: rgba(255,255,255,0.5);
+                letter-spacing: 1px
+            }
+
+        /* Image/video */
+
+            .c-image-upload-preview-container {
+            }
+
+            .image-post-upload {
+                background-color: transparent !important;
+                border-style: dashed;
+                border: 3px dashed rgba(255,255,255,0.20) !important;
+                border-radius: 3px !important;
+            }
+
+                .content .main {
+                    margin-left: 0px;
+                }
+
+
+        /* Your subscribed subreddits */
+
+            .sr-suggestion {
+                border-radius: 4px;
+                text-transform: capitalize;
+                text-decoration: none !important;
+                border: none;
+                height: 20px;
+                font-size: 12px;
+                font-weight: 400;
+                color: black !important;
+                background: rgba(255,255,255,0.15);
+                padding: 2px 6px 2px 7px;
+                margin: 0;
+                line-height: 13px;
+                position: relative;
+                transition: all .15s ease-in-out;
+                white-space: nowrap;
+                box-shadow: 0 0 0 0 transparent;
+                letter-spacing: normal;
+                line-height: 24px
+            }
+
+                .sr-suggestion:hover {
+                    background: rgba(255,255,255,0.3);
+                    box-shadow: 0 4px 9px -2px #000000;
+                    z-index: 5;
+                }
+
+            #suggested-reddits h3 {
+                font-size: 11px;
+                margin-top: 5px;
+                margin-bottom: 10px
+            }
+
+        /* Bottom sub rules notice */
+
+            .submit_text h1 {
+                font-size: 11px !important;
+                font-weight: normal !important;
+                color: rgba(255,255,255,0.4) !important;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                font-weight: normal;
+                margin-top: 0
+            }
+
+            .content .submit_text .md-container {
+                background-color: transparent !important;
+                background-image: none !important;
+                box-shadow: none !important;
+                display: block !important;
+                margin: 0 10px 0 0;
+                border-radius: 0;
+                border-left: 3px solid #18C162;
+                padding: 0 10px 0 10px
+            }
+
+                .submit_text .md {
+                    text-transform: none !important;
+                    letter-spacing: normal;
+                    padding-top: 0;
+                    padding-bottom: 0;
+                    color: #18C162
+                }
+
+        /* Hide New Reddit ad */
+
+            #evts-colls-promo-js .roundfield {
+                display: none !important
+            }
+
+        /* Options (Send replies to my inbox) */
+
+            label[for=sendreplies], label[for=submit_type_profile], label[for=submit_type_subreddit] {
+                text-transform: capitalize;
+                letter-spacing: normal;
+                font-size: 13px;
+                padding: 9px;
+                color: black;
+                margin-bottom: 5px;
+            }
+
+            label[for=sendreplies] {
+                transform: translateY(3px)
+            }
+
+        /* Bottom Reddiquette notice */
+
+            .content.submit .info-notice {
+                background-color: rgba(255,255,255,0.1);
+                border: none;
+                padding: 9px;
+                margin-bottom: none;
+                font-size: 13px;
+                color: black;
+                text-transform: none;
+                letter-spacing: normal;
+            }
+
+                .content.submit .info-notice a {
+                    font-weight: normal;
+                    text-decoration: underline !important
+                }
+
+                .content.submit .info-notice::first-letter {
+                    text-transform: uppercase !important;
+                }
+
+            .submit .content {
+                width: 100%;
+                margin-right: none;
+            }
+
+            #url-field .clear-input-button {
+                display: none !important
+            }
+
+
+/*
+    10. User flair [.flair]
+*/
+
+    .flair {
+        display: inline-block;
+        margin-right: .5em;
+        padding: 1px 5px;
+        color: rgba(0,0,0,.35);
+        border: none;
+        border-radius: 10px;
+        font-size: 8px !important;
+        letter-spacing: 0.25px;
+        text-transform: uppercase;
+        font-weight: 600;
+        transform: translateY(-1px) translate3d(0, 0, 0);
+        /* Cool blur panel effect removed due to Firefox incompatibility */
+            /* background: url(%%blur-small%%) no-repeat center top;
+                background-attachment: fixed;
+                background-size: cover; */
+        background-color: #E3E7E9 !important;
+        box-shadow: inset 0 0 0 1000px rgba(255,255,255,.2);
+        color: rgba(0,0,0,.5);
+        transition: all .3s cubic-bezier(.75,-0.5,0,1.75);
+        transform: translateY(-1px) translate3d(0,0,0) perspective(1px) translateZ(100);
+        max-height: 14px !important;
+        position: relative;
+        z-index: 2000 !important;
+        -webkit-transform: translate3d(0, 0, 0);
+        backface-visibility: hidden;
+    }
+
+        .flair:hover {
+            transform: scale(1.5) translate3d(0, 0, 0);
+            -webkit-transform: scale(1.5) translate3d(0, 0, 0);
+            position: relative;
+            z-index: 2000 !important
+        }
+
+            /* Repositioning the hover scale in comments to stay below the overflow:hidden of the parent */
+
+            .comment .flair:hover {
+                transform: scale(1.5) translate3d(0, 0, 0) translateY(2px);
+            }
+
+        /* Repositioning in sidebar demo and posts (not comments or mod list) */
+
+        .top-matter .flair {
+            position: relative;
+            top:-4px;
+        }
+
+        .side .tagline .flair {
+            top:-5px;
+            left: -2px;
+        }
+
+
+/*
+    11. Hectorlizard's Flair Selector [.flairselector]
+*/
+
+    /*
+        11.1 Header & global
+    */
+
+        .flairselector {
+            font-size: x-small;
+            position: fixed;
+            top: 40% !important;
+            transform: translateY(-200px);
+            vertical-align: center;
+            left: 50% !important;
+            width: 518px !important;
+            margin-left: -261px !important;
+            padding-top: 84px !important;
+            padding-right: 0px !important;
+            background-image: url(%%flairselector%%);
+                background-size: 522px 90px;
+                background-repeat: no-repeat;
+                background-color: #D9DEE4;
+            border-radius: 10px !important;
+                border: none !important;
+            z-index: 4000;
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1), 0 20px 88px -14px rgba(0, 0, 0, 1), 0 0 0 2000px rgba(40, 40, 40, 0.7);
+        }
+
+            .flairselector h2 {
+                background: transparent;
+                font-size: 0
+            }
+
+    /*
+        11.2 Middle scrollable area [.optionpane]
+    */
+
+        .flairoptionpane {
+            margin-bottom: 0px;
+            margin-top: 0px;
+            max-height: 300px;
+            overflow-x: hidden !important;
+            text-align: center
+        }
+
+                .flairoptionpane ul, .flairoptionpane .flairsample-right, .flairoptionpane li, .flairoptionpane, .flairselector .flair  {
+                    text-align:center !important
+                }
+
+            .flairselector ul {
+                display: block;
+                overflow: visible;
+                vertical-align: top;
+                align-content: center;
+                padding: 30px 80px 30px 80px;
+                transform: translateX(172px);
+            }
+
+                    .flairselector ul .flair.selected:after {
+                        opacity:0.5 !important
+                    }
+
+                    .flairselector ul .flair:hover:before {
+                        opacity:1
+                    }
+
+                .flairselector li {
+                    height: 48px;
+                    border: none;
+                    cursor: pointer;
+                    display: block !important;
+                    background-color: transparent;
+                }
+
+                        .flairselector li:hover {
+                            border: none;
+                            border-radius:100px;
+                            background-color: transparent;
+                        }
+
+                        .flairselector li.selected {
+                            border: none;
+                            border-radius: 100px;
+                            opacity: 0.5 !important
+                        }
+
+                    .flairselector li a {
+                        color: rgba(0,0,0,.7) !important;
+                        font-weight: normal !important;
+                        opacity: 1;
+                        border-radius: 100px
+                    }
+
+                        .flairselector li a:hover {
+                            text-decoration:none
+                        }
+
+            .flairsample-right.texteditable ul,
+            .flairsample-right .texteditable ul,
+            ul.flairsample-right.texteditable,
+            ul.flairsample-right .texteditable {
+                text-align: center !important;
+            }
+
+                .flairsample-right.texteditable li,
+                .flairsample-right .texteditable li,
+                li.flairsample-right.texteditable,
+                li.flairsample-right .texteditable {
+                    text-align: center !important;
+                    position: relative;
+                    transform: translateX(-50%);
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    background-color: transparent !important
+                }
+
+            .flairselector .flairoptionpane .flairrichtext.flaircolordark.flair {
+                transform: scale(2) !important;
+                text-align: center !important;
+                font-size: 6px !important;
+                padding: 0 6px 2px 6px !important;
+                margin: 0 !important;
+                box-shadow: none;
+                color: rgba(0,0,0,.5);
+                background-color: #C2C7CC;
+            }
+
+                .flairselector .flairoptionpane .flairrichtext.flaircolordark.flair:hover {
+                    transform: scale(2.3) !important;
+                    box-shadow: none !important;
+                    box-shadow: inset 0 0 0 1000px rgba(0,0,0,.1) !important;
+                    color: rgba(0,0,0,.8);
+                }
+
+                .flairselector .flairoptionpane .flairrichtext.flaircolordark.flair::after, .flairselector .flairoptionpane .flairrichtext.flaircolordark.flair::before,  {
+                    display: none !important;
+                    opacity: 0 !important;
+                    visibility: hidden !important
+                }
+
+    /*
+        11.3 Bottom preview area
+    */
+
+        .flairsample-left .author {
+            font-size:0 !important
+        }
+
+        .flairsample-right .author {
+            font-size:0 !important
+        }
+
+        .flairselector ul .flair:before {
+            opacity: 1 !important;
+            text-shadow:-1px -1px 0 #e9ebee, -2px -2px 0 #e9ebee, -3px -3px 0 #e9ebee, 1px -1px 0 #e9ebee, 2px -2px 0 #e9ebee, 3px -3px 0 #e9ebee, -1px 1px 0 #e9ebee, -2px 2px 0 #e9ebee, -3px 3px 0 #e9ebee, 1px 1px 0 #e9ebee, 2px 2px 0 #e9ebee, 3px 3px 0 #e9ebee
+        }
+
+        .flairselector.drop-choices.active {
+            border: 1px solid gray;
+            display: block;
+            padding-right: 0px !important;
+            padding-bottom: 0px !important;
+            padding-left:0px !important
+        }
+
+        .flairselector .error {
+            text-align:center
+        }
+
+        .flairselector .selected, .flairselector.active li {
+            display: block;
+            font-weight: normal;
+            text-decoration:none !important
+        }
+
+        .flairselector .title {
+            font-size:x-small !important
+        }
+
+        .flairselector form {
+            border: none;
+            background-color: #fff !important;
+            clear: both;
+            display: block;
+            padding-top: 10px;
+            padding-bottom: 4px;
+            text-align: center;
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius:3px
+        }
+
+        .flairselector form > div {
+            margin:2px 0
+        }
+
+        .flairselector form button {
+            margin-left: 5px;
+            display: inline-block !important;
+            border-radius: 6px !important;
+            background-color: #47b535 !important;
+            color: black;
+            border: none !important;
+            padding: 4px 15px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: capitalize !important;
+            letter-spacing: normal;
+            margin-bottom: 10px
+        }
+
+        .flairselector form button:hover {
+            background-color:#3ba72f !important;
+            color: black !important;
+            border: none;
+            box-shadow: 0 4px 9px -3px rgba(70,181,53,0.51);
+        }
+
+        .flairselector form button:active {
+            background-color:#2B811D;
+            color: black;
+        }
+
+        .flairselector form button::first-letter {
+            text-transform:capitalize !important
+        }
+
+        .flairselector .customizer {
+            display:none
+        }
+
+            .flairselector .customizer input {
+                display:none
+            }
+
+            .flairselector .customizer button {
+                display:inline
+            }
+
+        .flairselector .flairremove {
+            margin-left: 3px;
+            display: inline-block !important;
+            border-radius: 2px;
+            background-color: transparent;
+            border: none;
+            padding: 6px;
+            text-align: center;
+            text-decoration: none;
+            text-transform: capitalize;
+            font-weight:600;
+            color: transparent;
+        }
+
+            .flairselector .flairremove a {
+                color:black !important
+            }
+
+                .flairselector .flairremove a:hover {
+                    text-decoration: underline
+                }
+
+
+/*
+    12. RES fixes
+*/
+
+    /* Selected Entry */
+
+        .res .entry.RES-keyNav-activeElement,
+        .res .commentarea .entry.RES-keyNav-activeElement .md,
+        .res .entry.RES-keyNav-activeElement .md-container, 
+        .res .commentarea .entry.RES-keyNav-activeElement .noncollapsed {
+            background: transparent !important;
+        }
+
+    /* RES User menu fixes */
+
+        .res #header-bottom-right {
+            top: 125px
+        }
+
+            #header-bottom-right .user, .res #header-bottom-right .user {
+                top: 0
+            }
+
+        #RESShortcutsEditContainer {
+            display: none
+        }
+
+    /* RES Button Focus */
+
+        button:focus {
+            outline: none
+        }
+
+    /* Checkboxes & labels */
+        
+        .titlebox form.toggle {
+            background: transparent
+        }
+
+        .res-sr-style-toggle label {
+            font-size: 10px!important;
+            color: white!important
+        }
+
+    /* RES (+ DASHBOARD) & (+ SHORTCUT) sidebar buttons */
+
+        .res .fancy-toggle-button.subscribe-button {
+            display: block;
+            margin-bottom: 10px
+        }
+
+        .res .side .res-fancy-toggle-button {
+            display: inline-block;
+            padding: 0 10px 1px 10px;
+            margin: 0 5px;
+            width: 110px;
+            border-color: black;
+            border-radius: 30px;
+            height: 22px;
+            font-weight: 700;
+            line-height: 22px;
+            letter-spacing: 1.12px;
+            text-transform: uppercase;
+            color: black !important;
+            background: transparent;
+            box-shadow: 0 0px 0px 0px rgba(98,66,0,0.4);
+            transition: box-shadow 0.2s ease;
+        }
+
+                .res .titlebox .RESshortcutside {
+                    padding-right: 0px !important
+                }
+
+                .res .titlebox .fancy-toggle-button {
+                    margin-right: 0
+                }
+
+            .res .side .RESshortcutside,
+            .res .side .RESDashboardToggle {
+                font-size: 0;
+                transition: box-shadow 0.2s ease
+            }
+
+            .res .side .RESshortcutside:after,
+            .res .side .RESshortcutside.remove:after {
+                content: "shortcut";
+                font-size: 11px
+            }
+
+            .res .side .RESDashboardToggle:after,
+            .res .side .RESDashboardToggle.remove:after {
+                content: "dashboard";
+                font-size: 11px
+            }
+
+        .res .side .RESshortcut {
+            margin-right: 10px
+        }
+
+        .res .side .RESshortcutside,
+        .res .side .RESDashboardToggle {
+            background: url(%%RES-add%%) 17px center no-repeat;
+            background-size: 13px 13px;
+        }
+
+        .res .side .RESDashboardToggle {
+            text-indent: 10px
+        }
+        
+        .res .side .RESshortcutside.remove,
+        .res .side .RESDashboardToggle.remove {
+            background: url(%%RES-remove%%) 17px center no-repeat;
+            background-size: 13px 13px;
+        }
+
+        .res .side .RESshortcutside:hover,
+        .res .side .RESDashboardToggle:hover,
+        .res .side .RESshortcutside.remove:hover,
+        .res .side .RESDashboardToggle.remove:hover { 
+            background-color: #fff;
+            border: 1px solid #fff;
+            box-shadow: 0 5px 11px -4px rgba(0,0,0,.4);
+            color: black !important;
+            transition: box-shadow 0.2s ease
+        }
+
+    /* RES Menu area */
+
+        /* See regular .menuarea section (6.2) */
+
+    /* RES Shortcuts */
+
+        #srList {
+            background: url(%%blur-small%%) no-repeat center top;
+            background-attachment: fixed;
+            background-size: cover;
+            border-radius: 6px;
+            border: none;
+            top: 10px;
+            left: 10px;
+            box-shadow: 0 11px 64px -10px rgba(0,0,0,0.50), inset 0 0 0 1px rgba(0,0,0,0.10);
+        }
+
+            /* "Filter Subreddits..." */
+
+                #srList input {
+                    margin: 10px
+                }
+
+            /* View all */
+
+                a[href$="/subreddits/"] {
+                    margin: 10px
+                }
+
+    /* RES User tags */
+
+        /* Icon */
+
+            .RESUserTagImage::after {
+                font: lighter 13px/8px 'Batch';
+                vertical-align: middle;
+                color: rgba(0,0,0, .4);
+                margin-right: 7px
+            }
+
+        /* Dialog */
+
+                .RESDialogSmall {
+                    background: url(%%blur-small%%) no-repeat center top;
+                    background-attachment: fixed;
+                    background-size: cover;
+                    border-radius: 6px;
+                    border: none;
+                    box-shadow: 0 11px 64px -10px rgba(0,0,0,0.50), inset 0 0 0 1px rgba(0,0,0,0.10);
+                }
+
+    /* RES Comments */
+
+        .res-commentBoxes {
+            border: none !important;
+        }
+
+            .res-commentBoxes .comment {
+                overflow: hidden;
+                margin: 10px !important;
+                border-width: 0px !important;
+                border-style: solid !important;
+                border-color: transparent !important;
+                border-image: initial !important;
+                padding: 10px !important;
+            }
+
+        /* Restore intended weight & color for "X points X days ago" */
+
+            .res-voteEnhancements-highlightScores span.score {
+                font-weight: normal;
+                color: #888;
+            }
+
+        /* Disable RES additional inline expando buttons */
+
+            .res-freetext-expando {
+                display: none
+            }
